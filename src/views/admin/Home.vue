@@ -30,8 +30,8 @@ import NormalCard from '@/components/NormalCard.vue'
 const active = ref(0)
 const tabs = ref([
   { title: '进行中', showCard: 'Card' },
-  { title: '已结束', showCard: 'Card' },
-  { title: '我的投稿', showCard: 'NormalCard' }
+  { title: '未开始', showCard: 'Card' },
+  { title: '已结束', showCard: 'NormalCard' }
 ])
 </script>
 

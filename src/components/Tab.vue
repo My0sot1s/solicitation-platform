@@ -36,7 +36,9 @@ type TabType = {
 ，但是，传递给 defineProps 的泛型参数本身不能是一个导入的类型 */
 
 const props = defineProps({
-  tabs: Array as PropType<TabType[]>
+  tabs: {
+    type: Array as PropType<TabType[]>
+  }
 })
 console.log(props.tabs)
 
