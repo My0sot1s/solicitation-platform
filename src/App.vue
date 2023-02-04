@@ -77,7 +77,7 @@ const onClickLeft = () => {
 .van-nav-bar__left > * {
   white-space: nowrap;
   font-size: 5vw;
-  color: black !important;
+  color: #475569 !important;
 }
 
 .van-tabbar-item {
