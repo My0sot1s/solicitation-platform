@@ -20,17 +20,6 @@ const tabs: TabType[] = [
 </script>
 
 <style lang="less" scoped>
-.van-tabs {
-  .time {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-
-    & > span {
-      margin-right: 5px;
-    }
-  }
-}
 .van-list {
   display: flex;
   flex-direction: column;

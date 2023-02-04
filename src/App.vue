@@ -5,7 +5,9 @@
       :left-arrow="route.meta.title !== '稿件征集'"
       @click-left="onClickLeft"
     />
-    <RouterView />
+    <transition name="van-fade">
+      <RouterView />
+    </transition>
     <van-tabbar
       route
       v-if="route.path.includes('admin') && route.meta.title === '稿件征集'"

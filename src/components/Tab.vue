@@ -11,7 +11,7 @@
           <component :is="tab.showCard === 'Card' ? Card : NormalCard" />
         </CardList>
       </van-tab>
-      <template #nav-right>
+      <template #nav-right v-if="tabs?.[0].title !== '未分类'">
         <div class="time van-tab">
           <span>所有时间</span>
           <van-icon name="notes-o" size="175%" />
