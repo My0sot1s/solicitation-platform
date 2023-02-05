@@ -5,7 +5,7 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import Tab from '@/components/Tab.vue'
-import type { TabsType } from '@/type/tab'
+import type { TabsType } from '@/types/tab'
 
 const router = useRouter()
 

@@ -4,3 +4,5 @@ type TabType = {
 }
 
 export type TabsType = Array<TabType>
+
+export type { TabType }
