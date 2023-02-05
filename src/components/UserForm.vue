@@ -1,5 +1,5 @@
 <template>
-  <van-form @submit="onSubmit" class="form">
+  <van-form @submit="onSubmit">
     <div class="input-block">
       <div class="title">您的姓名/昵称：</div>
       <van-cell-group inset>
@@ -32,6 +32,71 @@
       </van-cell-group>
     </div>
     <div class="input-block">
+      <div class="title">想要分享的内容（文字）：</div>
+      <van-cell-group inset>
+        <van-field
+          v-model="message"
+          rows="3"
+          autosize
+          type="textarea"
+          show-word-limit
+          maxlength="300"
+        />
+      </van-cell-group>
+    </div>
+    <div class="input-block">
+      <div class="title">想要分享的内容（文字）：</div>
+      <van-cell-group inset>
+        <van-field
+          v-model="message"
+          rows="3"
+          autosize
+          type="textarea"
+          show-word-limit
+          maxlength="300"
+        />
+      </van-cell-group>
+    </div>
+    <div class="input-block">
+      <div class="title">想要分享的内容（文字）：</div>
+      <van-cell-group inset>
+        <van-field
+          v-model="message"
+          rows="3"
+          autosize
+          type="textarea"
+          show-word-limit
+          maxlength="300"
+        />
+      </van-cell-group>
+    </div>
+    <div class="input-block">
+      <div class="title">想要分享的内容（文字）：</div>
+      <van-cell-group inset>
+        <van-field
+          v-model="message"
+          rows="3"
+          autosize
+          type="textarea"
+          show-word-limit
+          maxlength="300"
+        />
+      </van-cell-group>
+    </div>
+    <div class="input-block">
+      <div class="title">想要分享的内容（文字）：</div>
+      <van-cell-group inset>
+        <van-field
+          v-model="message"
+          rows="3"
+          autosize
+          type="textarea"
+          show-word-limit
+          maxlength="500"
+        />
+      </van-cell-group>
+    </div>
+    <div class="input-block">
       <div class="title">想要分享的内容（图片）：</div>
       <van-cell-group inset>
         <van-field name="uploader">
@@ -46,8 +111,8 @@
         提交
       </van-button>
     </div>
-    <van-back-top target=".form" />
   </van-form>
+  <van-back-top target=".van-form" />
 </template>
 
 <script lang="ts" setup>
@@ -65,7 +130,7 @@ const onSubmit = (values: any) => {
 <style lang="less" scoped>
 .van-form {
   /* 这里必须设置高度和overflow:auto，backtop才能生效 */
-  height: 80vh;
+  height: calc(100vh - 46.8px);
   overflow: auto;
   .input-block {
     display: flex;
@@ -73,9 +138,6 @@ const onSubmit = (values: any) => {
     .title {
       padding: 13px 16px;
     }
-  }
-  .van-back-top {
-    color: white !important;
   }
 }
 .van-cell-group {
