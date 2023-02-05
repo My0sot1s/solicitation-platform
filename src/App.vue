@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <van-nav-bar
+      fixed
+      placeholder
       :left-text="(route.meta.title as string)"
       :left-arrow="route.meta.title !== '稿件征集'"
       @click-left="onClickLeft"
@@ -41,10 +43,22 @@ const onClickLeft = () => {
 </script>
 
 <style lang="less">
+*::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+}
+
+* {
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 微软雅黑;
+  color: #475569;
 }
 
 :root:root {

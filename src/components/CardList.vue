@@ -7,16 +7,17 @@
   >
     <div v-if="tab?.showCard === 'Card'">
       <Card
-        v-for="(card, index) in cards"
+        v-for="card in cards"
         :key="card"
-        @click="cardClick(index)"
+        :title="tab.title"
+        @click="cardClick(tab!.title)"
       />
     </div>
     <div v-else-if="tab?.showCard === 'NormalCard'">
       <NormalCard
-        v-for="(card, index) in cards"
+        v-for="card in cards"
         :key="card"
-        @click="cardClick(index)"
+        @click="cardClick(tab!.title)"
       />
     </div>
   </van-list>
@@ -25,13 +26,18 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import type { PropType } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import type { TabType } from '@/types/tab'
 import Card from '@/components/Card.vue'
 import NormalCard from '@/components/NormalCard.vue'
+
 defineProps({
   tab: Object as PropType<TabType>
 })
 
+const router = useRouter()
+const route = useRoute()
+console.log(route)
 /* 列表 */
 const cards = ref<number[]>([])
 const loading = ref(false)
@@ -53,8 +59,19 @@ const onLoad = () => {
     }
   }, 1000)
 }
-const cardClick = (index: number) => {
-  console.log(index)
+const cardClick = (title: string) => {
+  if (route.path.includes('admin')) {
+    /* 管理员界面 */
+  } else {
+    switch (title) {
+      case '进行中':
+        router.push('/new')
+        break
+      case '我的投稿':
+        router.push('/my_submission')
+        break
+    }
+  }
 }
 </script>
 
@@ -65,5 +82,6 @@ const cardClick = (index: number) => {
   align-items: center;
   padding-top: 20px;
   margin-bottom: 65px;
+  min-height: 80vh;
 }
 </style>

@@ -12,7 +12,13 @@ import {
   Cell,
   CellGroup,
   Tabbar,
-  TabbarItem
+  TabbarItem,
+  Sticky,
+  Divider,
+  Form,
+  Field,
+  BackTop,
+  Uploader
 } from 'vant'
 import 'vant/lib/index.css'
 
@@ -34,5 +40,11 @@ app.use(Cell)
 app.use(CellGroup)
 app.use(Tabbar)
 app.use(TabbarItem)
+app.use(Sticky)
+app.use(Divider)
+app.use(Form)
+app.use(Field)
+app.use(BackTop)
+app.use(Uploader)
 
 app.mount('#app')
