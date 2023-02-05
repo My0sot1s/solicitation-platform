@@ -5,7 +5,7 @@
     finished-text="没有更多了"
     @load="onLoad"
   >
-    <slot></slot>
+    <slot :cards="list"></slot>
   </van-list>
 </template>
 
@@ -14,12 +14,12 @@ import { ref } from 'vue'
 /* 列表 */
 const list = ref<number[]>([])
 const loading = ref(false)
-const finished = ref(true)
+const finished = ref(false)
 const onLoad = () => {
   // 异步更新数据
   // setTimeout 仅做示例，真实场景中一般为 ajax 请求
   setTimeout(() => {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 3; i++) {
       list.value.push(list.value.length + 1)
     }
 
@@ -27,7 +27,7 @@ const onLoad = () => {
     loading.value = false
 
     // 数据全部加载完成
-    if (list.value.length >= 40) {
+    if (list.value.length >= 3) {
       finished.value = true
     }
   }, 1000)

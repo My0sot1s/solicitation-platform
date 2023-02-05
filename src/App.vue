@@ -5,9 +5,11 @@
       :left-arrow="route.meta.title !== '稿件征集'"
       @click-left="onClickLeft"
     />
-    <transition name="van-fade">
-      <RouterView />
-    </transition>
+    <router-view v-slot="{ Component }">
+      <transition name="van-fade">
+        <component :is="Component" />
+      </transition>
+    </router-view>
     <van-tabbar
       route
       v-if="route.path.includes('admin') && route.meta.title === '稿件征集'"
@@ -54,8 +56,8 @@ const onClickLeft = () => {
   // background-color: #eff2f5;
   background: linear-gradient(to bottom, #fff, #eff2f5);
   width: 100vw;
-  min-height: 100vh;
-  overflow: hidden;
+  height: 100vh;
+  overflow: scroll;
 }
 
 /* 适配软键盘弹出 */

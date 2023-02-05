@@ -7,9 +7,9 @@ import Tab from '@/components/Tab.vue'
 import type { TabsType } from '@/type/tab'
 
 const tabs: TabsType = [
-  { title: '进行中', showCard: 'NormalCard' },
-  { title: '未开始', showCard: 'NormalCard' },
-  { title: '已结束', showCard: 'NormalCard' }
+  { title: '未分类', showCard: 'NormalCard' },
+  { title: '收藏', showCard: 'NormalCard' },
+  { title: '略过', showCard: 'NormalCard' }
 ]
 </script>
 
