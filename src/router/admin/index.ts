@@ -10,7 +10,7 @@ export const adminRoutes: Array<RouteRecordRaw> = [
   {
     path: '/admin/audit',
     meta: { title: '稿件审核' },
-    component: () => import('@/views/admin/audit.vue')
+    component: () => import('@/views/admin/Audit.vue')
   },
   {
     path: '/admin/new',

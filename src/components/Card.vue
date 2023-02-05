@@ -25,7 +25,7 @@
   box-sizing: border-box;
 }
 .card {
-  width: calc(327vw / 375 * 100);
+  width: 327px;
   /* height: calc(256vw / 375 * 100); */
   padding: 3vw 0;
   margin-bottom: 4vw;
@@ -37,11 +37,11 @@
   justify-content: center;
   align-items: center;
   .van-image {
-    width: calc(303vw / 375 * 100) !important;
-    height: calc(138vw / 375 * 100) !important;
+    width: 303px !important;
+    height: 138px !important;
   }
   .detail {
-    width: calc(303vw / 375 * 100);
+    width: 303px;
     .van-cell {
       padding-left: 0;
       padding-right: 0;
@@ -49,7 +49,7 @@
       color: #475569;
     }
     .description {
-      width: calc(265vw / 375 * 100);
+      width: 265px;
       margin-bottom: 2vw;
       color: #cbd5e1;
       font-size: small;
