@@ -3,14 +3,10 @@
 </template>
 
 <script lang="ts" setup>
-// import { ref } from 'vue'
 import Tab from '@/components/Tab.vue'
+import type { TabsType } from '@/type/tab'
 
-type TabType = {
-  title: string
-  showCard: string
-}
-const tabs: TabType[] = [
+const tabs: TabsType = [
   { title: '未分类', showCard: 'NormalCard' },
   { title: '收藏', showCard: 'NormalCard' },
   { title: '赞过', showCard: 'NormalCard' }

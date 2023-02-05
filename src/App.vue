@@ -82,14 +82,19 @@ const onClickLeft = () => {
   color: #475569 !important;
 }
 
-.van-tabbar-item {
-  z-index: 9;
+.van-tabbar {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  &-item {
+    border-radius: inherit;
+    z-index: 9;
 
-  &__icon {
-    .new-icon {
-      height: 60px;
-      margin-bottom: 20px;
-      z-index: 9;
+    &__icon {
+      .new-icon {
+        height: 60px;
+        margin-bottom: 20px;
+        z-index: 9;
+      }
     }
   }
 }
