@@ -3,6 +3,6 @@ type TabType = {
   showCard: string
 }
 
-export type TabsType = Array<TabType>
+type TabsType = Array<TabType>
 
-export type { TabType }
+export type { TabType, TabsType }

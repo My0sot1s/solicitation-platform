@@ -9,7 +9,8 @@
     />
     <router-view v-slot="{ Component }">
       <transition name="van-fade">
-        <component :is="Component" />
+        <!-- Component inside <Transition> renders non-element root node that cannot be animated.  -->
+        <div><component :is="Component" /></div>
       </transition>
     </router-view>
     <van-tabbar
@@ -68,6 +69,8 @@ const onClickLeft = () => {
 :root:root {
   --van-tabbar-height: 60px;
   --van-tabbar-item-icon-size: 30px;
+  --van-field-icon-size: 30px;
+  --van-field-clear-icon-size: 25px;
 }
 
 #app {
@@ -117,5 +120,9 @@ const onClickLeft = () => {
       }
     }
   }
+}
+
+.van-tabbar-item--active .van-icon {
+  color: #1989fa;
 }
 </style>

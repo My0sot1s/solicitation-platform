@@ -8,8 +8,13 @@ export const adminRoutes: Array<RouteRecordRaw> = [
     component: () => import('@/views/admin/Home.vue')
   },
   {
+    path: '/admin/manuscripts',
+    meta: { title: '' },
+    component: () => import('@/views/admin/Manuscripts.vue')
+  },
+  {
     path: '/admin/audit',
-    meta: { title: '稿件审核' },
+    meta: { title: '稿件详情' },
     component: () => import('@/views/admin/Audit.vue')
   },
   {
@@ -21,5 +26,10 @@ export const adminRoutes: Array<RouteRecordRaw> = [
     path: '/admin/setting',
     meta: { title: '稿件征集' },
     component: () => import('@/views/admin/Setting.vue')
+  },
+  {
+    path: '/admin/edit',
+    meta: { title: '修改征稿' },
+    component: () => import('@/views/admin/Edit.vue')
   }
 ]

@@ -4,6 +4,7 @@
     :finished="finished"
     finished-text="没有更多了"
     @load="onLoad"
+    :immediate-check="false"
   >
     <div v-if="tab?.showCard === 'Card'">
       <Card
@@ -24,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import type { PropType } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import type { TabType } from '@/types/tab'
@@ -37,11 +38,16 @@ defineProps({
 
 const router = useRouter()
 const route = useRoute()
-console.log(route)
 /* 列表 */
 const cards = ref<number[]>([])
-const loading = ref(false)
+const loading = ref(true)
 const finished = ref(false)
+
+// vant的bug: list未加载完时切换页面将不触发load, 手动触发第一次load
+onMounted(() => {
+  onLoad()
+})
+
 const onLoad = () => {
   // 异步更新数据
   // setTimeout 仅做示例，真实场景中一般为 ajax 请求
@@ -57,11 +63,18 @@ const onLoad = () => {
     if (cards.value.length >= 3) {
       finished.value = true
     }
-  }, 1000)
+  }, 300)
 }
 const cardClick = (title: string) => {
   if (route.path.includes('admin')) {
     /* 管理员界面 */
+    if (route.path.includes('/home')) {
+      router.push('/admin/Manuscripts')
+    } else if (route.path.includes('/Manuscripts')) {
+      router.push('/admin/audit')
+    } else if (route.path.includes('/setting')) {
+      router.push('/admin/Edit')
+    }
   } else {
     switch (title) {
       case '进行中':

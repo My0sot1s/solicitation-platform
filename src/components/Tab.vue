@@ -7,7 +7,6 @@
       shrink
       sticky
       offset-top="12vw"
-      @change="changeTab"
     >
       <van-tab
         v-for="tab in tabs"
@@ -15,8 +14,7 @@
         :title="tab.title"
         :disabled="tab.showCard === undefined"
       >
-        <!-- CardList根据tab类型请求数据，接受 CardList 传来的数据渲染Card -->
-        <CardList type="XXX" :tab="tab"> </CardList>
+        <CardList :tab="tab"> </CardList>
       </van-tab>
       <template #nav-right v-if="tabs?.[0].title !== '未分类'">
         <div class="time van-tab">
@@ -42,11 +40,6 @@ defineProps({
 
 /* 标签栏 */
 const active = ref(0)
-
-/* 切换tab */
-const changeTab = (_: number, title: string) => {
-  console.log(title)
-}
 </script>
 
 <style lang="less">

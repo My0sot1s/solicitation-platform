@@ -1,7 +1,9 @@
 <template>
-  <h1>New</h1>
+  <AdminForm />
 </template>
 
-<script setup lang="ts"></script>
+<script lang="ts" setup>
+import AdminForm from '@/components/AdminForm.vue'
+</script>
 
 <style lang="less" scoped></style>
