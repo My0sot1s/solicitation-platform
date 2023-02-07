@@ -46,27 +46,44 @@
         </template>
       </van-field>
     </FormItem>
-    <div style="margin: 16px">
+    <div class="button-submit">
       <van-button round block type="default" native-type="submit">
-        提交
+        {{ formData ? '修改' : '提交' }}
       </van-button>
     </div>
+    <div v-if="formData" class="button-delete">删除投稿</div>
   </van-form>
   <van-back-top target=".van-form" />
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import { reactive, onMounted } from 'vue'
 import FormItem from '@/components/FormItem.vue'
 import type { userForm } from '@/types/form'
+import { isValidKey } from '@/utils/isValidKey'
+
+const props = defineProps<{
+  formData?: userForm
+}>()
 
 const form = reactive<userForm>({
   username: '',
   phone: '',
   title: '',
   content: '',
-  imgs: [{ url: 'https://fastly.jsdelivr.net/npm/@vant/assets/leaf.jpeg' }]
+  imgs: []
 })
+
+onMounted(() => {
+  if (props.formData) {
+    for (let k in form) {
+      if (isValidKey(k, form)) {
+        form[k] = props.formData[k]
+      }
+    }
+  }
+})
+
 const onSubmit = (values: any) => {
   console.log('submit', values)
 }
@@ -77,5 +94,18 @@ const onSubmit = (values: any) => {
   /* 这里必须设置高度和overflow:auto，backtop才能生效 */
   height: calc(100vh - 46.8px);
   overflow: auto;
+}
+
+.button {
+  &-submit {
+    margin-top: 20px;
+  }
+
+  &-delete {
+    text-align: center;
+    text-decoration: underline;
+    color: #999;
+    margin-top: 20px;
+  }
 }
 </style>

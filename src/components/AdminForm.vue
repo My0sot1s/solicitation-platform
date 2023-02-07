@@ -40,10 +40,13 @@
         </template>
       </van-field>
     </FormItem>
-    <div style="margin: 16px">
+    <div class="button-submit">
       <van-button round block type="default" native-type="submit">
         {{ formData ? '提交更改' : '提交' }}
       </van-button>
+    </div>
+    <div v-if="formData" class="button-delete" @click="delActivity">
+      删除活动
     </div>
   </van-form>
   <van-back-top target=".van-form" />
@@ -68,7 +71,7 @@ const form = reactive<adminForm>({
   dateRange: '',
   title: '',
   description: '',
-  cover: [{ url: 'https://fastly.jsdelivr.net/npm/@vant/assets/leaf.jpeg' }]
+  cover: []
 })
 /* 日历 */
 const calendar = reactive<{
@@ -88,14 +91,18 @@ onMounted(() => {
     }
   }
 })
-/* 表单提交 */
-const onSubmit = (values: any) => {
-  console.log('submit', values)
-}
 /* 日期确认 */
 const onConfirm = (date: Array<Date>) => {
   calendar.show = false
   form.dateRange = `${date[0].toLocaleDateString()}——${date[1].toLocaleDateString()}`
+}
+/* 表单提交 */
+const onSubmit = (values: any) => {
+  console.log('submit', values)
+}
+/* 删除活动 */
+const delActivity = () => {
+  console.log('delete')
 }
 </script>
 
@@ -104,5 +111,18 @@ const onConfirm = (date: Array<Date>) => {
   /* 这里必须设置高度和overflow:auto，backtop才能生效 */
   height: calc(100vh - 46.8px);
   overflow: auto;
+}
+
+.button {
+  &-submit {
+    margin-top: 20px;
+  }
+
+  &-delete {
+    text-align: center;
+    text-decoration: underline;
+    color: #999;
+    margin-top: 20px;
+  }
 }
 </style>
