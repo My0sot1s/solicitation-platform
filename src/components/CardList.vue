@@ -69,7 +69,9 @@ const cardClick = (title: string) => {
   if (route.path.includes('admin')) {
     /* 管理员界面 */
     if (route.path.includes('/home')) {
-      router.push('/admin/Manuscripts')
+      if (title !== '未开始') {
+        router.push('/admin/Manuscripts')
+      }
     } else if (route.path.includes('/Manuscripts')) {
       router.push('/admin/audit')
     } else if (route.path.includes('/setting')) {

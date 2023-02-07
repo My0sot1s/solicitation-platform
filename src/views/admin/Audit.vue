@@ -117,7 +117,7 @@
 
   .button {
     width: 70vw;
-    height: 6vh;
+    height: 6.5vh;
     margin: 2vh auto;
     border-radius: 10px;
     background-color: #f8fafc;
@@ -133,7 +133,7 @@
     .button__star {
       background-color: #fff;
       box-shadow: 0 0 10px #ccc;
-      padding: 0.9vh 9vw;
+      padding: 1vh 9vw;
       border-radius: 10px;
 
       span {
