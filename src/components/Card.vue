@@ -11,7 +11,7 @@
       <div class="description">
         一二三四五六七八一二三四五六七八九十一二三四五六七八一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十九十九十一二三四五六七八九十
       </div>
-      <div class="time"><van-icon name="clock-o" /> 2022.2.22</div>
+      <div class="time"><van-icon name="clock-o" />2022.2.22</div>
     </div>
   </div>
 </template>
@@ -27,10 +27,10 @@
 .card {
   width: 327px;
   /* height: calc(256vw / 375 * 100); */
-  padding: 3vw 0;
-  margin-bottom: 4vw;
-  border-radius: 1.5vw;
-  box-shadow: 0px 3px 5px #bbb;
+  padding: 11.25px 0;
+  margin-bottom: 15px;
+  border-radius: 5.625px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07), 0 1px 4px rgba(0, 0, 0, 0.07);
   background-color: #fff;
   display: flex;
   flex-direction: column;
@@ -48,9 +48,12 @@
       font-size: larger;
       color: #475569;
     }
+    .van-cell:after {
+      border-bottom: 0px;
+    }
     .description {
       width: 265px;
-      margin-bottom: 2vw;
+      margin-bottom: 7.5px;
       color: #cbd5e1;
       font-size: small;
       /* max-height: calc(48vw / 375 * 100); */
@@ -64,6 +67,10 @@
     .time {
       float: right;
       color: #cbd5e1;
+      :first-child {
+        margin-right: 3.75px;
+        color: #cbd5e1;
+      }
     }
   }
 }

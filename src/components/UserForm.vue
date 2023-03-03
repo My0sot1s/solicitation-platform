@@ -107,5 +107,11 @@ const onSubmit = (values: any) => {
     color: #999;
     margin-top: 20px;
   }
+  .input-block > :nth-child(2) {
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07), 0 1px 4px rgba(0, 0, 0, 0.07);
+  }
+  .van-button {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
 }
 </style>

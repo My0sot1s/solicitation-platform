@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <van-nav-bar
-      fixed
       placeholder
       :left-text="(route.meta.title as string)"
       :left-arrow="route.meta.title !== '稿件征集'"
