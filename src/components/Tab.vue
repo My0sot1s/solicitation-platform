@@ -1,13 +1,6 @@
 <template>
   <div>
-    <van-tabs
-      v-model:active="active"
-      animated
-      swipeable
-      shrink
-      sticky
-      offset-top="12vw"
-    >
+    <van-tabs v-model:active="active" animated swipeable shrink sticky>
       <van-tab
         v-for="tab in tabs"
         :key="tab.title"
@@ -43,13 +36,6 @@ const active = ref(0)
 </script>
 
 <style lang="less">
-/* 填充NavBar和Tab之间的间隙 */
-.van-tabs__nav,
-.van-tabs__nav--line,
-.van-tabs__nav--shrink,
-.van-tabs__nav--complete {
-  border-top: 2px solid #e2e8f0;
-}
 .van-tabs {
   .time {
     display: flex;
