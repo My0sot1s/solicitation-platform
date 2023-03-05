@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 
 export const adminRoutes: Array<RouteRecordRaw> = [
-  { path: '/admin', redirect: '/admin/login' },
+  { path: '/admin', redirect: '/admin/home' },
   {
     path: '/admin/home',
     meta: { title: '稿件征集' },

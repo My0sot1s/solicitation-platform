@@ -14,6 +14,7 @@ axios.interceptors.request.use(
       const token = localStorage.getItem('token')
       if (token) config.headers.token = token
     } else if (document.location.hash.includes('admin')) {
+      // 管理员请求
       const adminToken = localStorage.getItem('adminToken')
       if (adminToken) config.headers.token = adminToken
     }
@@ -30,11 +31,7 @@ axios.interceptors.response.use(
     if (response.data.code) {
       const code = response.data.code.toString()
       if (['401', '440', '441'].includes(code)) {
-        if (document.location.hash.includes('admin')) {
-          window.location.hash = '/admin/login'
-        } else {
-          wxLoginRedirect()
-        }
+        wxLoginRedirect()
       }
     }
     return response

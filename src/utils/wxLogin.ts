@@ -1,3 +1,4 @@
+import { adminLogin } from '@/request/apis/admin'
 import { userLogin } from '@/request/apis/user'
 
 export function wxLoginRedirect() {
@@ -11,27 +12,36 @@ async function checkCode() {
     const searchParams = new URLSearchParams(document.location.search)
     const wxCode = searchParams.get('code')
     if (wxCode) {
-      localStorage.setItem('token', await userLogin(wxCode))
-      window.location.replace('/')
+      if (document.location.hash.includes('admin')) {
+        localStorage.setItem('adminToken', await adminLogin(wxCode))
+        window.location.replace('/admin')
+      } else {
+        localStorage.setItem('token', await userLogin(wxCode))
+        window.location.replace('/')
+      }
     }
   }
 }
 
 function checkToken() {
-  if (!localStorage.getItem('token')) {
+  let token: string | null
+  if (document.location.hash.includes('admin')) {
+    token = localStorage.getItem('adminToken')
+  } else {
+    token = localStorage.getItem('token')
+  }
+  if (!token) {
     wxLoginRedirect()
   }
 }
 
 export default {
   async install() {
-    if (!document.location.hash.includes('admin')) {
-      try {
-        await checkCode()
-      } catch (error) {
-        console.log(error)
-      }
-      checkToken()
+    try {
+      await checkCode()
+    } catch (error) {
+      console.error('登陆错误', error)
     }
+    checkToken()
   }
 }
