@@ -7,4 +7,9 @@ const router = createRouter({
   routes: [...adminRoutes, ...clientRoutes]
 })
 
+router.beforeEach((to) => {
+  if (to.query.code) return to.path
+  return
+})
+
 export default router
