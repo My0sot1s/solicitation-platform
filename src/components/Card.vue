@@ -4,20 +4,32 @@
       width="100"
       height="100"
       radius="1vw"
-      src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
+      :src="card?.ActivityPhotos[0].link"
     />
     <div class="detail">
-      <van-cell title="标题" is-link :clickable="false" />
+      <van-cell :title="card?.activityName" is-link :clickable="false" />
       <div class="description">
-        一二三四五六七八一二三四五六七八九十一二三四五六七八一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十九十九十一二三四五六七八九十
+        {{ card?.description }}
       </div>
-      <div class="time"><van-icon name="clock-o" />2022.2.22</div>
+      <div class="time"><van-icon name="clock-o" />{{ date }}</div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-/* import { ref } from 'vue' */
+import { ref, defineProps, computed } from 'vue'
+import type { PropType } from 'vue'
+import type { activityList } from '@/request/apis/types'
+import { cardProps } from 'vant'
+
+const props = defineProps({
+  card: Object as PropType<activityList>
+})
+
+const date = computed(() => {
+  const date0= new Date(props.card!.endTime)
+  return `${date0.getFullYear()}.${date0.getMonth() + 1}.${date0.getDate()}`
+})
 </script>
 
 <style lang="less" scoped>

@@ -9,7 +9,8 @@
     <div v-if="tab?.showCard === 'Card'">
       <Card
         v-for="card in cards"
-        :key="card"
+        :card = card
+        :key="card.ID"
         :title="tab.title"
         @click="cardClick(tab!.title)"
       />
@@ -17,7 +18,7 @@
     <div v-else-if="tab?.showCard === 'NormalCard'">
       <NormalCard
         v-for="card in cards"
-        :key="card"
+        :key="card.ID"
         @click="cardClick(tab!.title)"
       />
     </div>
@@ -29,41 +30,34 @@ import { ref, onMounted } from 'vue'
 import type { PropType } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import type { TabType } from '@/types/tab'
+import type { activityList } from '@/request/apis/types'
 import Card from '@/components/Card.vue'
 import NormalCard from '@/components/NormalCard.vue'
 
-defineProps({
+const props = defineProps({
   tab: Object as PropType<TabType>
 })
 
 const router = useRouter()
 const route = useRoute()
 /* 列表 */
-const cards = ref<number[]>([])
+/* const cards = ref<number[]>([]) */
 const loading = ref(true)
 const finished = ref(false)
+
+const cards = ref<activityList[]>()
 
 // vant的bug: list未加载完时切换页面将不触发load, 手动触发第一次load
 onMounted(() => {
   onLoad()
 })
 
-const onLoad = () => {
+const onLoad = async () => {
   // 异步更新数据
   // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-  setTimeout(() => {
-    for (let i = 0; i < 3; i++) {
-      cards.value.push(cards.value.length + 1)
-    }
-
-    // 加载状态结束
-    loading.value = false
-
-    // 数据全部加载完成
-    if (cards.value.length >= 3) {
-      finished.value = true
-    }
-  }, 300)
+  cards.value = await props.tab!.api()
+  loading.value = false
+  finished.value = true
 }
 const cardClick = (title: string) => {
   if (route.path.includes('admin')) {

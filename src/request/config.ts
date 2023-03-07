@@ -8,7 +8,7 @@ import {
 } from 'vant'
 
 const axios = _axios.create({
-  baseURL: 'http://localhost:5173/api',
+  baseURL: '/api',
   timeout: 30000
 })
 
@@ -46,7 +46,7 @@ axios.interceptors.response.use(
       if (['401', '440', '441'].includes(code)) {
         wxLoginRedirect(location.hash)
       } else {
-        showSuccessToast(msg)
+        showSuccessToast('')
       }
     }
     return response

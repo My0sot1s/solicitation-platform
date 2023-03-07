@@ -60,7 +60,8 @@ const onClickLeft = () => {
   font-family: 微软雅黑;
   color: #475569;
 }
-.van-toast__text, .van-badge__wrapper{
+.van-toast .van-toast__text,
+.van-toast .van-badge__wrapper {
   color: white !important;
 }
 /* 回到顶部按钮的图案颜色 */

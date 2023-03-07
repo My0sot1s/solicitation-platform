@@ -7,12 +7,20 @@
 <script lang="ts" setup>
 import Tab from '@/components/Tab.vue'
 import type { TabsType } from '@/types/tab'
+import { onMounted } from 'vue'
+import { userGoing, userFinished } from '@/request/apis/user'
 
 const tabs: TabsType = [
-  { title: '进行中', showCard: 'Card' },
-  { title: '已结束', showCard: 'Card' },
-  { title: '我的投稿', showCard: 'NormalCard' }
+  { title: '进行中', showCard: 'Card', api: userGoing},
+  { title: '已结束', showCard: 'Card', api: userFinished },
+  { title: '我的投稿', showCard: 'NormalCard', api: userGoing }
 ]
+onMounted(async () => {
+  /* const list = await userGoing()
+  console.log(list)
+  const list2 = await userFinished()
+  console.log(list2) */
+})
 </script>
 
 <style lang="less" scoped></style>
