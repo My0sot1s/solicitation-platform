@@ -17,7 +17,8 @@ import {
   Field,
   BackTop,
   Uploader,
-  Calendar
+  Calendar,
+  Toast
 } from 'vant'
 import 'vant/lib/index.css'
 
@@ -41,5 +42,6 @@ export default {
     app.use(BackTop)
     app.use(Uploader)
     app.use(Calendar)
+    app.use(Toast)
   }
 }
