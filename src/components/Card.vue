@@ -20,14 +20,13 @@
 import { ref, defineProps, computed } from 'vue'
 import type { PropType } from 'vue'
 import type { activityList } from '@/request/apis/types'
-import { cardProps } from 'vant'
 
 const props = defineProps({
   card: Object as PropType<activityList>
 })
 
 const date = computed(() => {
-  const date0= new Date(props.card!.endTime)
+  const date0 = new Date(props.card!.endTime)
   return `${date0.getFullYear()}.${date0.getMonth() + 1}.${date0.getDate()}`
 })
 </script>
