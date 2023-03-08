@@ -4,12 +4,12 @@
       width="100"
       height="100"
       radius="1vw"
-      :src="card?.ActivityPhotos[0].link"
+      :src="card?.ActivityPhotos[0].Link"
     />
     <div class="detail">
-      <van-cell :title="card?.activityName" is-link :clickable="false" />
+      <van-cell :title="card?.ActivityName" is-link :clickable="false" />
       <div class="description">
-        {{ card?.description }}
+        {{ card?.Description }}
       </div>
       <div class="time"><van-icon name="clock-o" />{{ date }}</div>
     </div>
@@ -19,14 +19,14 @@
 <script lang="ts" setup>
 import { ref, defineProps, computed } from 'vue'
 import type { PropType } from 'vue'
-import type { activityList } from '@/request/apis/types'
+import type { ActivityList } from '@/types/activityList'
 
 const props = defineProps({
-  card: Object as PropType<activityList>
+  card: Object as PropType<ActivityList>
 })
 
 const date = computed(() => {
-  const date0 = new Date(props.card!.endTime)
+  const date0 = new Date(props.card!.EndTime)
   return `${date0.getFullYear()}.${date0.getMonth() + 1}.${date0.getDate()}`
 })
 </script>

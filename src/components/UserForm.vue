@@ -3,26 +3,26 @@
     <div class="input-block">
       <div class="title">您的姓名/昵称：</div>
       <van-cell-group inset>
-        <van-field v-model="username" name="用户名" />
+        <van-field v-model="form.Name" />
       </van-cell-group>
     </div>
     <div class="input-block">
       <div class="title">您的电话号码：</div>
       <van-cell-group inset>
-        <van-field v-model="username" name="用户名" />
+        <van-field v-model="form.PhoneNum" />
       </van-cell-group>
     </div>
     <div class="input-block">
       <div class="title">内容的标题：</div>
       <van-cell-group inset>
-        <van-field v-model="username" name="用户名" />
+        <van-field v-model="form.Title" />
       </van-cell-group>
     </div>
     <div class="input-block">
       <div class="title">想要分享的内容（文字）：</div>
       <van-cell-group inset>
         <van-field
-          v-model="message"
+          v-model="form.Content"
           rows="3"
           autosize
           type="textarea"
@@ -41,6 +41,31 @@
         </van-field>
       </van-cell-group>
     </div>
+    <template v-for="index in [1, 2, 3]">
+      <div class="input-block" v-show="len >= index">
+        <div class="title">链接{{ index }}：</div>
+        <van-cell-group inset>
+          <van-field
+            :right-icon="index == len ? 'close' : ''"
+            @click-right-icon="del(index)"
+            v-model="form[('Link-' + index) as keyof userForm] as string"
+          />
+        </van-cell-group>
+      </div>
+      <div class="input-block" v-show="len >= index">
+        <div class="title">描述{{ index }}：</div>
+        <van-cell-group inset>
+          <van-field
+            v-model="form[('Description-' + index) as keyof userForm] as string"
+          />
+        </van-cell-group>
+      </div>
+    </template>
+    <div style="margin: 16px 16px 15vw 16px">
+      <van-button icon="plus" size="large" @click="len++" v-show="len < 3"
+        >添加更多...</van-button
+      >
+    </div>
     <div style="margin: 16px">
       <van-button round block type="default" native-type="submit">
         提交
@@ -51,14 +76,38 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-const username = ref('')
-const message = ref('')
-const imgs = ref([
-  { url: 'https://fastly.jsdelivr.net/npm/@vant/assets/leaf.jpeg' }
-])
-const onSubmit = (values: any) => {
-  console.log('submit', values)
+import { ref, reactive, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { userNew } from '@/request/apis/user'
+import type { userForm } from '@/types/form'
+import type { UploaderFileListItem } from 'vant'
+const route = useRoute()
+const router = useRouter()
+
+const len = ref(1)
+function del(index: number): void {
+  len.value--
+  form[('Description-' + index) as keyof userForm] = undefined
+  form[('Link-' + index) as keyof userForm] = undefined
+}
+
+const imgs = ref<UploaderFileListItem[]>()
+watch(imgs, (val) => {
+  form.Photos = val!.map((item) => {
+    return {
+      link: item.url as string
+    }
+  })
+  console.log(form.Photos)
+})
+
+const form: userForm = reactive({})
+form.ActivityID = parseInt(route.params.ActivityID as string)
+
+const onSubmit = async () => {
+  console.log('submit', form)
+  await userNew(form)
+  router.back()
 }
 </script>
 

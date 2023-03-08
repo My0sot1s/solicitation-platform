@@ -1,8 +1,8 @@
-import type { activityList } from '@/request/apis/types'
+import type { ActivityList } from '@/types/activityList'
 type TabType = {
   title: string
   showCard: string
-  api: () => Promise<activityList[]>
+  api: () => Promise<ActivityList[]>
 }
 
 type TabsType = Array<TabType>

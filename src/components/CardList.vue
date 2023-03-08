@@ -12,14 +12,14 @@
         :card="card"
         :key="card.ID"
         :title="tab.title"
-        @click="cardClick(tab!.title)"
+        @click="cardClick(tab!.title, card.ID)"
       />
     </div>
     <div v-else-if="tab?.showCard === 'NormalCard'">
       <NormalCard
         v-for="card in cards"
         :key="card.ID"
-        @click="cardClick(tab!.title)"
+        @click="cardClick(tab!.title, card.ID)"
       />
     </div>
   </van-list>
@@ -30,7 +30,7 @@ import { ref, onMounted } from 'vue'
 import type { PropType } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import type { TabType } from '@/types/tab'
-import type { activityList } from '@/request/apis/types'
+import type { ActivityList } from '@/types/activityList'
 import Card from '@/components/Card.vue'
 import NormalCard from '@/components/NormalCard.vue'
 
@@ -45,7 +45,7 @@ const props = defineProps({
 /* const cards = ref<number[]>([]) */
 const loading = ref(true)
 const finished = ref(false)
-const cards = ref<activityList[]>()
+const cards = ref<ActivityList[]>()
 
 // vant的bug: list未加载完时切换页面将不触发load, 手动触发第一次load
 onMounted(() => {
@@ -57,7 +57,7 @@ const onLoad = async () => {
   loading.value = false
   finished.value = true
 }
-const cardClick = (title: string) => {
+const cardClick = (title: string, ActivityID: number) => {
   if (route.path.includes('admin')) {
     /* 管理员界面 */
     if (route.path.includes('/home')) {
@@ -72,7 +72,7 @@ const cardClick = (title: string) => {
   } else {
     switch (title) {
       case '进行中':
-        router.push('/new')
+        router.push(`/new/${ActivityID}`)
         break
       case '我的投稿':
         router.push('/my_submission')
