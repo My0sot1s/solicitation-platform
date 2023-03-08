@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <Tab :tabs="tabs" />
 </template>
 
@@ -14,3 +14,4 @@ const tabs: TabsType = [
 </script>
 
 <style lang="less" scoped></style>
+ -->

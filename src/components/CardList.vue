@@ -18,7 +18,7 @@
     <div v-else-if="tab?.showCard === 'NormalCard'">
       <NormalCard
         v-for="card in cards"
-        :card="card as userForm"
+        :card="card"
         :key="card.ID"
         @click="cardClick(tab!.title, card.ActivityID, card.ID)"
       />
@@ -35,7 +35,6 @@ import type { ActivityList } from '@/types/activityList'
 import type { userForm } from '@/types/form'
 import Card from '@/components/Card.vue'
 import NormalCard from '@/components/NormalCard.vue'
-import { tabProps } from 'vant'
 
 const router = useRouter()
 const route = useRoute()
@@ -45,7 +44,6 @@ const props = defineProps({
 })
 
 /* 列表 */
-/* const cards = ref<number[]>([]) */
 const loading = ref(true)
 const finished = ref(false)
 const cards = ref<ActivityList[] | userForm[]>()

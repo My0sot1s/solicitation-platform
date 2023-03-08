@@ -36,7 +36,8 @@
         :rules="[{ required: true, message: '请选择封面图片' }]"
       >
         <template #input>
-          <van-uploader v-model="form.cover" :max-count="1" />
+          <!-- <van-uploader v-model="form.cover" :max-count="1" /> -->
+          <van-uploader :max-count="1" />
         </template>
       </van-field>
     </FormItem>
