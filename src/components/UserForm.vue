@@ -3,25 +3,26 @@
     <div class="input-block">
       <div class="title">您的姓名/昵称：</div>
       <van-cell-group inset>
-        <van-field v-model="form.Name" />
+        <van-field clickable v-model="form.Name" />
       </van-cell-group>
     </div>
     <div class="input-block">
       <div class="title">您的电话号码：</div>
       <van-cell-group inset>
-        <van-field v-model="form.PhoneNum" />
+        <van-field clickable v-model="form.PhoneNum" type="tel" />
       </van-cell-group>
     </div>
     <div class="input-block">
       <div class="title">内容的标题：</div>
       <van-cell-group inset>
-        <van-field v-model="form.Title" />
+        <van-field clickable v-model="form.Title" />
       </van-cell-group>
     </div>
     <div class="input-block">
       <div class="title">想要分享的内容（文字）：</div>
       <van-cell-group inset>
         <van-field
+          clickable
           v-model="form.Content"
           rows="3"
           autosize
@@ -61,12 +62,12 @@
         </van-cell-group>
       </div>
     </template>
-    <div style="margin: 16px 16px 15vw 16px">
+    <div style="margin: 16px 16px 10vw 16px">
       <van-button icon="plus" size="large" @click="len++" v-show="len < 3"
         >添加更多...</van-button
       >
     </div>
-    <div style="margin: 16px">
+    <div style="margin: 32px">
       <van-button round block type="default" native-type="submit">
         提交
       </van-button>
@@ -79,6 +80,7 @@
 import { ref, reactive, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { userNew } from '@/request/apis/user'
+import { showFailToast } from 'vant'
 import type { userForm } from '@/types/form'
 import type { UploaderFileListItem } from 'vant'
 const route = useRoute()
@@ -104,8 +106,44 @@ watch(imgs, (val) => {
 const form: userForm = reactive({})
 form.ActivityID = parseInt(route.params.ActivityID as string)
 
+function checkName() {
+  if (form.Name) {
+    return true
+  } else {
+    showFailToast('请输入名字')
+    return false
+  }
+}
+function checkPhoneNumber() {
+  if (form.PhoneNum) {
+    return true
+  } else {
+    showFailToast('请输入电话号码')
+    return false
+  }
+}
+function checkTitle() {
+  if (form.Title) {
+    return true
+  } else {
+    showFailToast('请输入标题')
+    return false
+  }
+}
+function checkContent() {
+  if (form.Content) {
+    return true
+  } else {
+    showFailToast('请输入分享内容')
+    return false
+  }
+}
+function checkFilled() {
+  return checkName() && checkPhoneNumber() && checkTitle() && checkContent()
+}
 const onSubmit = async () => {
   console.log('submit', form)
+  if (!checkFilled()) return
   await userNew(form)
   router.back()
 }

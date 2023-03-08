@@ -13,8 +13,8 @@ export const clientRoutes: Array<RouteRecordRaw> = [
     component: () => import('@/views/client/New.vue')
   },
   {
-    path: '/my_submission',
-    meta: { title: '活动名' },
+    path: '/my-submission/:ActivityID/',
+    meta: { title: '我的投稿' },
     component: () => import('@/views/client/MySubmission.vue')
   }
 ]

@@ -10,14 +10,17 @@ type userForm = {
   PhoneNum?: string
   Title?: string
   ActivityID?: number
-  Photos?: Array<{link: string}>
+  Photos?: Array<{ link: string }>
+  UpdatedAt?: string /* 后端传回的数据 */
+  ID?: number
+  [proName: string]: any
 }
 
 type adminForm = {
   dateRange: string
   title: string
   description: string
-  cover: Array<{link: string}>
+  cover: Array<{ link: string }>
 }
 
 export type { userForm, adminForm }

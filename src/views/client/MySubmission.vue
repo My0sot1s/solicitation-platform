@@ -1,5 +1,5 @@
 <template>
-  <UserForm :form-data="form" />
+  <UserForm />
 </template>
 
 <script lang="ts" setup>
