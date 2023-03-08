@@ -10,7 +10,7 @@ export function wxLoginRedirect(hash: string) {
 
 async function checkCode() {
   if (document.location.hash.includes('?')) {
-    const query = document.location.hash.match(/(?<=code=).+/)
+    const query = document.location.hash.match(/code=([^&]+)/)
     let wxCode = ''
     if (query) wxCode = query[0].split('&')[0]
 
