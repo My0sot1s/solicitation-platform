@@ -2,9 +2,10 @@
   <van-list
     v-model:loading="loading"
     :finished="finished"
+    :error="error"
     finished-text="没有更多了"
+    error-text="请求失败，刷新重试"
     @load="onLoad"
-    :immediate-check="false"
   >
     <div v-if="tab?.showCard === 'Card'">
       <Card
@@ -27,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import type { PropType } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import type { TabType } from '@/types/tab'
@@ -44,28 +45,34 @@ const props = defineProps({
 })
 
 /* 列表 */
-const loading = ref(true)
+const loading = ref(false)
 const finished = ref(false)
+const error = ref(false)
 const cards = ref<ActivityList[] | userForm[]>()
 
-// vant的bug: list未加载完时切换页面将不触发load, 手动触发第一次load
-onMounted(() => {
-  onLoad()
-})
-
 const onLoad = async () => {
-  cards.value = await props.tab!.api()
+  try {
+    cards.value = await props.tab!.api()
+    console.log(cards.value)
+
+    finished.value = true
+  } catch (e) {
+    error.value = true
+  }
   loading.value = false
-  finished.value = true
 }
+
 const cardClick = (title: string, ActivityID: number, ID?: number) => {
   if (route.path.includes('admin')) {
     /* 管理员界面 */
     if (route.path.includes('/home')) {
       if (title !== '未开始') {
-        router.push('/admin/Manuscripts')
+        router.push({
+          name: 'manuscripts',
+          params: { ID: 1 }
+        })
       }
-    } else if (route.path.includes('/Manuscripts')) {
+    } else if (route.path.includes('/manuscripts')) {
       router.push('/admin/audit')
     } else if (route.path.includes('/setting')) {
       router.push('/admin/Edit')

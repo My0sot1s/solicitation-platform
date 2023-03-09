@@ -2,7 +2,7 @@
   <div>
     <van-cell-group>
       <van-cell
-        title="日常稿件征集活动！"
+        :title="card?.ActivityName"
         :value="date"
         :label="props.card?.Title"
         is-link
@@ -13,10 +13,11 @@
 
 <script lang="ts" setup>
 import type { PropType } from 'vue'
+import type { ActivityList } from '@/types/activityList'
 import type { userForm } from '@/types/form'
 import { computed } from 'vue'
 const props = defineProps({
-  card: Object as PropType<userForm>
+  card: Object as PropType<ActivityList | userForm>
 })
 
 const date = computed(() => {

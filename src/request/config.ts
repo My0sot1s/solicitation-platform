@@ -43,7 +43,7 @@ axios.interceptors.response.use(
       const code = response.data.code.toString()
       const { msg } = response.data
       if (code !== '200') showFailToast(msg)
-      if (['401', '440', '441'].includes(code)) {
+      if (code == '401') {
         wxLoginRedirect(location.hash)
       } else {
         showSuccessToast('')

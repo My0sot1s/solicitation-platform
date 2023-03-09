@@ -5,12 +5,16 @@
 <script lang="ts" setup>
 import Tab from '@/components/Tab.vue'
 import type { TabsType } from '@/types/tab'
-import { userGoing, userFinished } from '@/request/apis/user'
+import {
+  adminGoing,
+  adminFinished,
+  adminNotStarted
+} from '@/request/apis/admin'
 
 const tabs: TabsType = [
-  { title: '进行中', showCard: 'Card', api: userGoing },
-  { title: '未开始', showCard: 'Card', api: userGoing },
-  { title: '已结束', showCard: 'Card', api: userFinished }
+  { title: '进行中', showCard: 'Card', api: adminGoing },
+  { title: '未开始', showCard: 'Card', api: adminNotStarted },
+  { title: '已结束', showCard: 'Card', api: adminFinished }
 ]
 </script>
 
