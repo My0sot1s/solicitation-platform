@@ -7,13 +7,18 @@
         :title="tab.title"
         :disabled="tab.showCard === undefined"
       >
-        <CardList :tab="tab"> </CardList>
+        <CardList :tab="tab" :dates="dates"> </CardList>
       </van-tab>
       <template #nav-right v-if="tabs?.[0].title !== '未分类'">
-        <div class="time van-tab">
-          <span>所有时间</span>
+        <div class="time van-tab" @click="showCalendar = true">
+          <span>选择时间</span>
           <van-icon name="notes-o" size="175%" />
         </div>
+        <van-calendar
+          type="multiple"
+          v-model:show="showCalendar"
+          @confirm="listFilter"
+        />
       </template>
     </van-tabs>
   </div>
@@ -28,11 +33,19 @@ import type { TabsType } from '@/types/tab'
 defineProps({
   tabs: {
     type: Array as PropType<TabsType>
-  }
+  },
 })
 
 /* 标签栏 */
 const active = ref(0)
+const showCalendar = ref(false)
+const dates = ref<Date[]>([])
+
+function listFilter(date: Date[]) {
+  console.log(date)
+  dates.value = date
+  showCalendar.value = false
+}
 </script>
 
 <style lang="less">

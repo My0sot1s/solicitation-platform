@@ -14,6 +14,8 @@ type userForm = {
   UpdatedAt?: string /* 后端传回的数据 */
   ID?: number
   Activities?: {ActivityName: string, [proName: string]: any}[]
+  StartTime?: string
+  EndTime?: string
   Operator?: string
   [proName: string]: any
 }

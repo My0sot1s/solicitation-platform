@@ -23,9 +23,7 @@
         v-for="card in cards"
         :card="card"
         :key="card.ID"
-        @click="
-          cardClick(tab!.title, card.ActivityID, card.ID, card.Title)
-        "
+        @click="cardClick(tab!.title, card.ActivityID, card.ID, card.Title)"
       />
     </div>
   </van-list>
@@ -33,7 +31,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import type { PropType } from 'vue'
+import { type PropType, computed } from 'vue'
 import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router'
 import type { TabType } from '@/types/tab'
 import type { ActivityList } from '@/types/activityList'
@@ -45,25 +43,50 @@ const router = useRouter()
 const route = useRoute()
 
 const props = defineProps({
-  tab: Object as PropType<TabType>
+  tab: Object as PropType<TabType>,
+  dates: {
+    type: Array as PropType<Date[]>
+  }
 })
 
 /* 列表 */
 const loading = ref(false)
 const finished = ref(false)
 const error = ref(false)
-const cards = ref<ActivityList[] | userForm[]>()
-
+const cards0 = ref<ActivityList[] | userForm[]>([])
 const onLoad = async () => {
   try {
-    cards.value = await props.tab!.api()
-    console.log(cards.value)
+    cards0.value = await props.tab!.api()
+    console.log(cards0.value)
     finished.value = true
   } catch (e) {
     error.value = true
   }
   loading.value = false
 }
+const cards = computed(() => {
+  if (props.tab?.showCard === 'Card') {
+    return (cards0.value as ActivityList[]).filter((e) => {
+      if (!props.dates?.length) {
+        return true
+      } else {
+        return props.dates.some((date) => {
+          return date >= new Date(e.StartTime) && date <= new Date(e.EndTime)
+        })
+      }
+    })
+  } else {
+    return (cards0.value as userForm[]).filter((e) => {
+      if (!props.dates?.length) {
+        return true
+      } else {
+        return props.dates.some((date) => {
+          return date >= new Date(e.StartTime as string) && date <= new Date(e.EndTime as string)
+        })
+      }
+    })
+  }
+})
 
 onBeforeRouteLeave((to, from) => {
   to.meta.title = from.meta.next
