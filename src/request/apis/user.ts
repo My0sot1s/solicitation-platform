@@ -36,8 +36,22 @@ async function userDetail(ID: number): Promise<userForm> {
   return data.data
 }
 
-async function userDelete(ID: number): Promise<string>{
+async function userDelete(ID: number): Promise<string> {
   const { data } = await axios.post('user/delete', { ID })
   return data.data
 }
-export { userLogin, userGoing, userFinished, userNew, myArticle, userDetail, userDelete }
+
+async function userUpdate(form: userForm): Promise<string> {
+  const { data } = await axios.post('/user/update', form)
+  return data.data
+}
+export {
+  userLogin,
+  userGoing,
+  userFinished,
+  userNew,
+  myArticle,
+  userDetail,
+  userDelete,
+  userUpdate
+}

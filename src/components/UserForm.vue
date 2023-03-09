@@ -72,7 +72,7 @@
         提交
       </van-button>
     </div>
-    <div class="cancel" v-if="showCancel" @click="confirmCancel">删除投稿</div>
+    <div class="cancel" v-if="isEdit" @click="confirmCancel">删除投稿</div>
   </van-form>
   <van-back-top target=".van-form" />
 </template>
@@ -80,20 +80,23 @@
 <script lang="ts" setup>
 import { ref, reactive, watch, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { userNew, userDetail, userDelete } from '@/request/apis/user'
+import { userNew, userDetail, userDelete, userUpdate } from '@/request/apis/user'
 import { showFailToast, showConfirmDialog } from 'vant'
 import type { userForm } from '@/types/form'
 import type { UploaderFileListItem } from 'vant'
 const route = useRoute()
 const router = useRouter()
-const showCancel = ref(false)
+const isEdit = ref(false)
 const form: userForm = reactive({})
 onBeforeMount(async () => {
   if (route.fullPath.includes('submission')) {
-    showCancel.value = true
+    isEdit.value = true
     const res = await userDetail(parseInt(route.query.ID as string))
     Object.assign(form, res[0])
+    form.ArticleID = parseInt(route.query.ID as string)
     console.log(form.value)
+  }else{
+    form.ActivityID = parseInt(route.params.ActivityID as string)
   }
 })
 
@@ -114,7 +117,6 @@ watch(imgs, (val) => {
   console.log(form.Photos)
 })
 
-form.ActivityID = parseInt(route.params.ActivityID as string)
 
 function checkName() {
   if (form.Name) {
@@ -154,7 +156,11 @@ function checkFilled() {
 const onSubmit = async () => {
   console.log('submit', form)
   if (!checkFilled()) return
-  await userNew(form)
+  if(isEdit) {
+    await userUpdate(form)
+  }else{
+    await userNew(form)
+  }
   router.back()
 }
 

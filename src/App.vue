@@ -73,7 +73,7 @@ const onClickLeft = () => {
   color: rgb(25, 137, 250);
 }
 
-.van-button__text {
+.van-calendar .van-button__text {
   color: white
 }
 

@@ -10,6 +10,7 @@ type userForm = {
   PhoneNum?: string
   Title?: string
   ActivityID?: number
+  ArticleID?: number
   Photos?: Array<{ link: string }>
   UpdatedAt?: string /* 后端传回的数据 */
   ID?: number
