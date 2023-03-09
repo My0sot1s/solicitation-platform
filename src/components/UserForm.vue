@@ -72,22 +72,25 @@
         提交
       </van-button>
     </div>
+    <div class="cancel" v-if="showCancel" @click="confirmCancel">删除投稿</div>
   </van-form>
   <van-back-top target=".van-form" />
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, toRef, watch, onBeforeMount } from 'vue'
+import { ref, reactive, watch, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { userNew, userDetail } from '@/request/apis/user'
-import { showFailToast } from 'vant'
+import { userNew, userDetail, userDelete } from '@/request/apis/user'
+import { showFailToast, showConfirmDialog } from 'vant'
 import type { userForm } from '@/types/form'
 import type { UploaderFileListItem } from 'vant'
 const route = useRoute()
 const router = useRouter()
+const showCancel = ref(false)
 const form: userForm = reactive({})
 onBeforeMount(async () => {
   if (route.fullPath.includes('submission')) {
+    showCancel.value = true
     const res = await userDetail(parseInt(route.query.ID as string))
     Object.assign(form, res[0])
     console.log(form.value)
@@ -154,6 +157,16 @@ const onSubmit = async () => {
   await userNew(form)
   router.back()
 }
+
+function confirmCancel() {
+  showConfirmDialog({
+    title: '',
+    message: '确认删除投稿吗？'
+  }).then(async () => {
+    await userDelete(parseInt(route.query.ID as string))
+    router.back()
+  })
+}
 </script>
 
 <style lang="less" scoped>
@@ -173,6 +186,13 @@ const onSubmit = async () => {
   }
   .van-button {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .cancel {
+    font-size: 12px;
+    text-decoration: underline;
+    text-align: center;
+    margin-top: -32px;
+    padding: 2vw 0 4vw 0;
   }
 }
 .van-cell-group {

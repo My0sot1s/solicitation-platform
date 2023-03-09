@@ -69,6 +69,10 @@ const onClickLeft = () => {
   color: white;
 }
 
+.van-dialog__confirm .van-button__content .van-button__text {
+  color: rgb(25, 137, 250);
+}
+
 :root:root {
   --van-tabbar-height: 60px;
   --van-tabbar-item-icon-size: 30px;

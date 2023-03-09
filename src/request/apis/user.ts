@@ -31,8 +31,13 @@ async function myArticle(): Promise<userForm[]> {
   return data.data
 }
 
-async function userDetail(ID: number): Promise<any> {
+async function userDetail(ID: number): Promise<userForm> {
   const { data } = await axios.post('user/detail', { ID })
   return data.data
 }
-export { userLogin, userGoing, userFinished, userNew, myArticle, userDetail }
+
+async function userDelete(ID: number): Promise<string>{
+  const { data } = await axios.post('user/delete', { ID })
+  return data.data
+}
+export { userLogin, userGoing, userFinished, userNew, myArticle, userDetail, userDelete }
