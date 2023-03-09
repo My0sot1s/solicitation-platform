@@ -26,8 +26,13 @@ async function userNew(form: userForm): Promise<string> {
   return data.data
 }
 
-async function myArticle(): Promise<any> {
+async function myArticle(): Promise<userForm[]> {
   const { data } = await axios.get('user/myArticle')
   return data.data
 }
-export { userLogin, userGoing, userFinished, userNew, myArticle }
+
+async function userDetail(ID: number): Promise<any> {
+  const { data } = await axios.post('user/detail', { ID })
+  return data.data
+}
+export { userLogin, userGoing, userFinished, userNew, myArticle, userDetail }

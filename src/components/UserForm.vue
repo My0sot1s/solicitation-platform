@@ -77,14 +77,22 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, toRef, watch, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { userNew } from '@/request/apis/user'
+import { userNew, userDetail } from '@/request/apis/user'
 import { showFailToast } from 'vant'
 import type { userForm } from '@/types/form'
 import type { UploaderFileListItem } from 'vant'
 const route = useRoute()
 const router = useRouter()
+const form: userForm = reactive({})
+onBeforeMount(async () => {
+  if (route.fullPath.includes('submission')) {
+    const res = await userDetail(parseInt(route.query.ID as string))
+    Object.assign(form, res[0])
+    console.log(form.value)
+  }
+})
 
 const len = ref(1)
 function del(index: number): void {
@@ -103,7 +111,6 @@ watch(imgs, (val) => {
   console.log(form.Photos)
 })
 
-const form: userForm = reactive({})
 form.ActivityID = parseInt(route.params.ActivityID as string)
 
 function checkName() {

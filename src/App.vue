@@ -98,6 +98,10 @@ const onClickLeft = () => {
     }
     .van-nav-bar__text {
       font-size: 5vw !important;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      max-width: 300px;
     }
   }
 }

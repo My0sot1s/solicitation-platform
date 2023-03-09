@@ -2,7 +2,7 @@
   <div>
     <van-cell-group>
       <van-cell
-        :title="props.card?.ActivityName || ''"
+        :title="props.card?.Activities[0].ActivityName"
         :value="date"
         :label="props.card?.Title"
         is-link

@@ -24,7 +24,7 @@
         :card="card"
         :key="card.ID"
         @click="
-          cardClick(tab!.title, card.ActivityID, card.ID, card.ActivityName)
+          cardClick(tab!.title, card.ActivityID, card.ID, card.Title)
         "
       />
     </div>
@@ -97,6 +97,7 @@ const cardClick = (
         router.push(`/new/${ActivityID}`)
         break
       case '我的投稿':
+        route.meta.next = `修改投稿: ${ActivityName}`
         router.push(`/my-submission/${ActivityID}/?ID=${ID}`)
         break
     }
