@@ -4,7 +4,7 @@
       width="100"
       height="100"
       radius="1vw"
-      :src="card?.ActivityPhotos[0].Link"
+      :src="card?.ActivityPhotos?.[0].Link"
     />
     <div class="detail">
       <van-cell :title="card?.ActivityName" is-link :clickable="false" />

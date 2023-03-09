@@ -13,7 +13,9 @@
         :card="card as ActivityList"
         :key="card.ID"
         :title="tab.title"
-        @click="cardClick(tab!.title, card.ID as number)"
+        @click="
+          cardClick(tab!.title, card.ID as number, undefined, card.ActivityName)
+        "
       />
     </div>
     <div v-else-if="tab?.showCard === 'NormalCard'">
@@ -21,7 +23,9 @@
         v-for="card in cards"
         :card="card"
         :key="card.ID"
-        @click="cardClick(tab!.title, card.ActivityID, card.ID)"
+        @click="
+          cardClick(tab!.title, card.ActivityID, card.ID, card.ActivityName)
+        "
       />
     </div>
   </van-list>
@@ -30,7 +34,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import type { PropType } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router'
 import type { TabType } from '@/types/tab'
 import type { ActivityList } from '@/types/activityList'
 import type { userForm } from '@/types/form'
@@ -54,7 +58,6 @@ const onLoad = async () => {
   try {
     cards.value = await props.tab!.api()
     console.log(cards.value)
-
     finished.value = true
   } catch (e) {
     error.value = true
@@ -62,7 +65,16 @@ const onLoad = async () => {
   loading.value = false
 }
 
-const cardClick = (title: string, ActivityID: number, ID?: number) => {
+onBeforeRouteLeave((to, from) => {
+  to.meta.title = from.meta.next
+  console.log(to)
+})
+const cardClick = (
+  title: string,
+  ActivityID: number,
+  ID?: number,
+  ActivityName?: string
+) => {
   if (route.path.includes('admin')) {
     /* 管理员界面 */
     if (route.path.includes('/home')) {
@@ -80,6 +92,8 @@ const cardClick = (title: string, ActivityID: number, ID?: number) => {
   } else {
     switch (title) {
       case '进行中':
+        route.meta.next = `新建征稿: ${ActivityName}`
+        console.log(route.meta.next)
         router.push(`/new/${ActivityID}`)
         break
       case '我的投稿':
