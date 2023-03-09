@@ -8,7 +8,8 @@ export const adminRoutes: Array<RouteRecordRaw> = [
     component: () => import('@/views/admin/Home.vue')
   },
   {
-    path: '/admin/manuscripts',
+    name: 'manuscripts',
+    path: '/admin/manuscripts/:ID',
     meta: { title: '' },
     component: () => import('@/views/admin/Manuscripts.vue')
   },

@@ -13,6 +13,7 @@ type userForm = {
   Photos?: Array<{ link: string }>
   UpdatedAt?: string /* 后端传回的数据 */
   ID?: number
+  Operator?: string
   [proName: string]: any
 }
 
