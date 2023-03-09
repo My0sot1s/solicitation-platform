@@ -42,7 +42,7 @@
         </van-field>
       </van-cell-group>
     </div>
-    <template v-for="index in [1, 2, 3]">
+    <template v-for="index in [1, 2, 3]" :key="index">
       <div class="input-block" v-show="len >= index">
         <div class="title">链接{{ index }}：</div>
         <van-cell-group inset>
@@ -80,7 +80,12 @@
 <script lang="ts" setup>
 import { ref, reactive, watch, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { userNew, userDetail, userDelete, userUpdate } from '@/request/apis/user'
+import {
+  userNew,
+  userDetail,
+  userDelete,
+  userUpdate
+} from '@/request/apis/user'
 import { showFailToast, showConfirmDialog } from 'vant'
 import type { userForm } from '@/types/form'
 import type { UploaderFileListItem } from 'vant'
@@ -95,7 +100,7 @@ onBeforeMount(async () => {
     Object.assign(form, res[0])
     form.ArticleID = parseInt(route.query.ID as string)
     console.log(form.value)
-  }else{
+  } else {
     form.ActivityID = parseInt(route.params.ActivityID as string)
   }
 })
@@ -116,7 +121,6 @@ watch(imgs, (val) => {
   })
   console.log(form.Photos)
 })
-
 
 function checkName() {
   if (form.Name) {
@@ -156,9 +160,9 @@ function checkFilled() {
 const onSubmit = async () => {
   console.log('submit', form)
   if (!checkFilled()) return
-  if(isEdit) {
+  if (isEdit) {
     await userUpdate(form)
-  }else{
+  } else {
     await userNew(form)
   }
   router.back()

@@ -1,5 +1,5 @@
 import axios from '../config'
-import type { ActivityList } from '../../types/activityList'
+import type { Activity } from '../../types/activity'
 import type { userForm } from '@/types/form'
 
 async function userLogin(wxCode: string): Promise<string> {
@@ -11,12 +11,12 @@ async function userLogin(wxCode: string): Promise<string> {
   }
 }
 
-async function userGoing(): Promise<ActivityList[]> {
+async function userGoing(): Promise<Activity[]> {
   const { data } = await axios.get('/user/going')
   return data.data
 }
 
-async function userFinished(): Promise<ActivityList[]> {
+async function userFinished(): Promise<Activity[]> {
   const { data } = await axios.get('/user/finished')
   return data.data
 }

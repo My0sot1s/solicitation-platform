@@ -10,7 +10,7 @@
     <div v-if="tab?.showCard === 'Card'">
       <Card
         v-for="card in cards"
-        :card="card as ActivityList"
+        :card="card as Activity"
         :key="card.ID"
         :title="tab.title"
         @click="
@@ -34,7 +34,7 @@ import { ref } from 'vue'
 import { type PropType, computed } from 'vue'
 import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router'
 import type { TabType } from '@/types/tab'
-import type { ActivityList } from '@/types/activityList'
+import type { Activity } from '@/types/activity'
 import type { userForm } from '@/types/form'
 import Card from '@/components/Card.vue'
 import NormalCard from '@/components/NormalCard.vue'
@@ -53,11 +53,10 @@ const props = defineProps({
 const loading = ref(false)
 const finished = ref(false)
 const error = ref(false)
-const cards0 = ref<ActivityList[] | userForm[]>([])
+const cards0 = ref<Activity[] | userForm[]>([])
 const onLoad = async () => {
   try {
     cards0.value = await props.tab!.api()
-    console.log(cards0.value)
     finished.value = true
   } catch (e) {
     error.value = true
@@ -66,7 +65,7 @@ const onLoad = async () => {
 }
 const cards = computed(() => {
   if (props.tab?.showCard === 'Card') {
-    return (cards0.value as ActivityList[]).filter((e) => {
+    return (cards0.value as Activity[]).filter((e) => {
       if (!props.dates?.length) {
         return true
       } else {
@@ -81,17 +80,22 @@ const cards = computed(() => {
         return true
       } else {
         return props.dates.some((date) => {
-          return date >= new Date(e.StartTime as string) && date <= new Date(e.EndTime as string)
+          return (
+            date >= new Date(e.StartTime as string) &&
+            date <= new Date(e.EndTime as string)
+          )
         })
       }
     })
   }
 })
-
+/* 修改特定页面 title */
 onBeforeRouteLeave((to, from) => {
-  to.meta.title = from.meta.next
-  console.log(to)
+  if (to.path.includes('/manuscripts') || from.path === '/home') {
+    to.meta.title = from.meta.next
+  }
 })
+/* 点击卡片 */
 const cardClick = (
   title: string,
   ActivityID: number,
@@ -102,6 +106,7 @@ const cardClick = (
     /* 管理员界面 */
     if (route.path.includes('/home')) {
       if (title !== '未开始') {
+        route.meta.next = ActivityName
         router.push({
           name: 'manuscripts',
           params: { ID: 1 }
@@ -134,7 +139,7 @@ const cardClick = (
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
-  margin-bottom: 65px;
+  margin-bottom: 100px;
   min-height: 80vh;
 }
 </style>

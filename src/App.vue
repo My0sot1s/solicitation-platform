@@ -12,10 +12,7 @@
         <div><component :is="Component" /></div>
       </transition>
     </router-view>
-    <van-tabbar
-      route
-      v-if="route.path.includes('admin') && route.meta.title === '稿件征集'"
-    >
+    <van-tabbar route v-if="route.path.includes('admin') && route.meta.showTab">
       <van-tabbar-item icon="home-o" to="/admin/home" />
       <van-tabbar-item>
         <template #icon>
@@ -74,7 +71,7 @@ const onClickLeft = () => {
 }
 
 .van-calendar .van-button__text {
-  color: white
+  color: white;
 }
 
 :root:root {

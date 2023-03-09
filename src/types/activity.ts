@@ -3,12 +3,13 @@ interface ActivityPhoto {
   [proName: string]: any
 }
 
-export interface ActivityList {
+export interface Activity {
   ID: number
   ActivityName: string
   Description: string
   StartTime: string
   EndTime: string
   ActivityPhotos: ActivityPhoto[]
+  Articles: []
   [proName: string]: any
 }

@@ -14,18 +14,24 @@ type userForm = {
   Photos?: Array<{ link: string }>
   UpdatedAt?: string /* 后端传回的数据 */
   ID?: number
-  Activities?: {ActivityName: string, [proName: string]: any}[]
+  Activities?: { ActivityName: string; [proName: string]: any }[]
   StartTime?: string
   EndTime?: string
-  Operator?: string
+  Status?: number
   [proName: string]: any
 }
 
 type adminForm = {
-  dateRange: string
-  title: string
-  description: string
-  cover: Array<{ link: string }>
+  ActivityName: string
+  Description: string
+  Photos: [
+    {
+      Link: string
+    }
+  ]
+  EndTime: number
+  StartTime: number
+  SenderName: string
 }
 
 export type { userForm, adminForm }

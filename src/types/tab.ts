@@ -1,9 +1,9 @@
-import type { ActivityList } from '@/types/activityList'
+import type { Activity } from '@/types/activity'
 import type { userForm } from './form'
 type TabType = {
   title: string
   showCard: string
-  api: () => Promise<ActivityList[] | userForm[]>
+  api: () => Promise<Activity[] | userForm[]>
 }
 
 type TabsType = Array<TabType>

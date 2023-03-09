@@ -33,7 +33,7 @@ import type { TabsType } from '@/types/tab'
 defineProps({
   tabs: {
     type: Array as PropType<TabsType>
-  },
+  }
 })
 
 /* 标签栏 */
@@ -41,8 +41,9 @@ const active = ref(0)
 const showCalendar = ref(false)
 const dates = ref<Date[]>([])
 
+/* 选择日期 */
 function listFilter(date: Date[]) {
-  console.log(date)
+  // console.log(date)
   dates.value = date
   showCalendar.value = false
 }

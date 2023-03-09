@@ -4,7 +4,7 @@ export const adminRoutes: Array<RouteRecordRaw> = [
   { path: '/admin', redirect: '/admin/home' },
   {
     path: '/admin/home',
-    meta: { title: '稿件征集' },
+    meta: { title: '稿件征集', showTab: true },
     component: () => import('@/views/admin/Home.vue')
   },
   {
@@ -25,7 +25,7 @@ export const adminRoutes: Array<RouteRecordRaw> = [
   },
   {
     path: '/admin/setting',
-    meta: { title: '稿件征集' },
+    meta: { title: '稿件征集', showTab: true },
     component: () => import('@/views/admin/Setting.vue')
   },
   {

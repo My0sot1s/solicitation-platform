@@ -19,10 +19,10 @@
 <script lang="ts" setup>
 import { defineProps, computed } from 'vue'
 import type { PropType } from 'vue'
-import type { ActivityList } from '@/types/activityList'
+import type { Activity } from '@/types/activity'
 
 const props = defineProps({
-  card: Object as PropType<ActivityList>
+  card: Object as PropType<Activity>
 })
 
 const date = computed(() => {
