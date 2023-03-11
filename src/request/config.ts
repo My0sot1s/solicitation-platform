@@ -40,13 +40,14 @@ axios.interceptors.response.use(
   function (response) {
     closeToast()
     if (response.data.code) {
-      const code = response.data.code.toString()
-      const { msg } = response.data
-      if (code !== '200') showFailToast(msg)
-      if (code == '401') {
-        wxLoginRedirect(location.hash)
-      } else {
+      const { code, msg } = response.data
+      if (code === 200) {
         showSuccessToast('')
+      } else {
+        showFailToast(msg)
+        if (code === 401) {
+          wxLoginRedirect(location.hash)
+        }
       }
     }
     return response
