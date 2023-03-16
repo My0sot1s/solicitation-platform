@@ -53,7 +53,7 @@ type userForm = {
 type adminForm = {
   ActivityName: string
   Description: string
-  ActivityPhotos: ActivityPhoto[]
+  Photos: ActivityPhoto[]
   // 上传的时间格式为时间戳数字，获取的格式为当地时间字符串
   EndTime: string | number
   StartTime: string | number

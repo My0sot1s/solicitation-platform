@@ -30,6 +30,10 @@ const props = defineProps({
   card: Object as PropType<Activity>
 })
 
+if (props.card?.ActivityPhotos.length === 0) {
+  props.card!.ActivityPhotos[0] = { Link: '' }
+}
+
 const date = computed(() => {
   if (new Date(props.card!.EndTime) >= new Date('3000/1/1')) return '长期任务'
   const date0 = new Date(props.card!.EndTime)

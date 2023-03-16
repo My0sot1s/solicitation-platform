@@ -20,7 +20,8 @@ import {
   Calendar,
   Toast,
   Picker,
-  Popup
+  Popup,
+  PullRefresh
 } from 'vant'
 import 'vant/lib/index.css'
 
@@ -47,5 +48,6 @@ export default {
     app.use(Toast)
     app.use(Picker)
     app.use(Popup)
+    app.use(PullRefresh)
   }
 }

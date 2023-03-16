@@ -1,5 +1,5 @@
 <template>
-  <van-form @submit="onSubmit" validate-first>
+  <van-form @submit="onSubmit" validate-first scroll-to-error>
     <FormItem title="征稿方：">
       <van-field
         v-model="form.SenderName"
@@ -91,6 +91,7 @@ import type { Activity } from '@/types/activity'
 import type { adminForm } from '@/types/form'
 import type { CalendarInstance, UploaderFileListItem } from 'vant'
 import { uploadFile, newActivity, updateActivity } from '@/request/apis/admin'
+import { showConfirmDialog } from 'vant'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -104,7 +105,11 @@ const form = reactive<adminForm>({
   Description: '',
   StartTime: 0,
   EndTime: 0,
-  ActivityPhotos: []
+  Photos: [
+    {
+      Link: ''
+    }
+  ]
 })
 const dateRange = computed(() => {
   if (!form?.EndTime) return ''
@@ -147,12 +152,11 @@ watch(
       form.EndTime = new Date(props.formData.EndTime).getTime()
       form.SenderName = props.formData.SenderName
       const Link = props.formData.ActivityPhotos[0].Link
-      form.ActivityPhotos = [{ Link }]
+      form.Photos = [{ Link }]
       imgFile.value = [{ url: Link }]
     }
   }
 )
-
 /* 选择图片 */
 const imgFile = ref<UploaderFileListItem[]>()
 const uploadImg = async (
@@ -162,7 +166,7 @@ const uploadImg = async (
     imgFile.value![0].status = 'uploading'
     const res = await uploadFile(items.file)
     if (res.code === 200) {
-      form.ActivityPhotos[0].Link = res.data.url
+      form.Photos[0].Link = res.data.url
       imgFile.value![0].status = 'done'
     } else {
       imgFile.value![0].status = 'failed'
@@ -170,23 +174,32 @@ const uploadImg = async (
   }
 }
 /* 表单提交 */
-const onSubmit = async () => {
-  console.log(form)
-  let res: boolean
-  if (props.formData?.ID) {
-    res = await updateActivity(props.formData.ID, form)
-  } else {
-    res = await newActivity(form)
-  }
-  if (res) {
-    setTimeout(() => {
-      router.back()
-    }, 1000)
-  }
+const onSubmit = () => {
+  showConfirmDialog({
+    title: '确认提交',
+    message: '提交后可在设置界面进行更改'
+  }).then(async () => {
+    let res: boolean
+    if (props.formData?.ID) {
+      res = await updateActivity(props.formData.ID, form)
+    } else {
+      res = await newActivity(form)
+    }
+    if (res) {
+      setTimeout(() => {
+        router.back()
+      }, 500)
+    }
+  })
 }
 /* 删除活动 */
 const delActivity = () => {
-  console.log('delete')
+  showConfirmDialog({
+    title: '确认删除',
+    message: '删除后不可找回！'
+  }).then(() => {
+    console.log('删除')
+  })
 }
 </script>
 

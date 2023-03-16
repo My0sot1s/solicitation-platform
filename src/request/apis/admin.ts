@@ -48,14 +48,16 @@ async function updateActivity(ID: number, form: adminForm): Promise<boolean> {
   else return false
 }
 
-function collection(ID: number) {
-  const res = axios.post('/admin/favorite', { ID })
-  return res
+async function collection(ID: number) {
+  const { data } = await axios.post('/admin/favorite', { ID })
+  if (data.code === 200) return true
+  else return false
 }
 
-function skip(ID: number) {
-  const res = axios.post('/admin/noFavorite', { ID })
-  return res
+async function skip(ID: number) {
+  const { data } = await axios.post('/admin/noFavorite', { ID })
+  if (data.code === 200) return true
+  else return false
 }
 
 export {

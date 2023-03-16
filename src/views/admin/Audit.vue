@@ -4,7 +4,7 @@
     <div class="userInfo">
       <div class="userInfo-item userInfo__name">
         <van-icon name="contact" size="28" />
-        <span>{{ article.Name }}</span>
+        <span>{{ article.Name }} {{ article.StuNum }}</span>
       </div>
       <div class="userInfo-item userInfo__phone">
         <van-icon name="phone-o" size="28" />
@@ -31,26 +31,59 @@
         </div> -->
       </div>
     </div>
-    <div class="button">
-      <div class="button__skip">略过</div>
-      <div class="button__star">
+    <div v-if="article.Status === 1" class="button">
+      <div class="button__skip" @click="onSkip">略过</div>
+      <div class="button__star" @click="onCollection">
         <van-icon name="star-o" />
         <span>收藏</span>
       </div>
+    </div>
+    <div v-else-if="article.Status === 2" class="button" @click="onSkip">
+      略过
+    </div>
+    <div v-if="article.Status === 3" class="button" @click="onCollection">
+      收藏
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useActivity } from '@/stores/activity'
+import { collection, skip } from '@/request/apis/admin'
+import { showConfirmDialog } from 'vant'
 
 const route = useRoute()
+const router = useRouter()
 const activityStore = useActivity()
 
 const article = activityStore.Articles.filter(
   (item) => item.ID === parseInt(route.params.ID as string)
 )[0]
+
+const onSkip = () => {
+  showConfirmDialog({
+    title: '确认略过'
+  }).then(async () => {
+    if (await skip(article.ID!)) {
+      setTimeout(() => {
+        router.back()
+      }, 500)
+    }
+  })
+}
+
+const onCollection = () => {
+  showConfirmDialog({
+    title: '确认收藏'
+  }).then(async () => {
+    if (await collection(article.ID!)) {
+      setTimeout(() => {
+        router.back()
+      }, 500)
+    }
+  })
+}
 </script>
 
 <style lang="less" scoped>
@@ -58,6 +91,7 @@ const article = activityStore.Articles.filter(
   background-color: #fff;
   height: calc(100vh - 46.8px);
   overflow: scroll;
+  padding-bottom: 50px;
 
   .title {
     font-size: 21px;

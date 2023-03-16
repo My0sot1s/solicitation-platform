@@ -44,7 +44,7 @@ axios.interceptors.response.use(
     if (response.data.code) {
       const { code, msg } = response.data
       if (code === 200) {
-        showSuccessToast('')
+        showSuccessToast(msg)
       } else {
         showFailToast(msg)
         if (code === 401) {

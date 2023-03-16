@@ -12,6 +12,7 @@ interface ActivityPhoto {
 interface Activity extends adminForm {
   ID: number
   Articles: userForm[]
+  ActivityPhotos: ActivityPhoto[]
   [proName: string]: any
 }
 

@@ -7,6 +7,7 @@ export const useActivity = defineStore('activity', {
       ID: 0,
       ActivityName: '',
       Description: '',
+      Photos: [],
       ActivityPhotos: [],
       EndTime: '',
       StartTime: '',

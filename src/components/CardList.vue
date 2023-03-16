@@ -1,32 +1,43 @@
 <template>
-  <van-list
-    v-model:loading="loading"
-    :finished="finished"
-    :error="error"
-    finished-text="没有更多了"
-    error-text="请求失败，刷新重试"
-    @load="onLoad"
+  <van-pull-refresh
+    v-model="loading"
+    success-text="刷新成功"
+    @refresh="onRefresh"
   >
-    <div v-if="tab?.showCard === 'Card'">
-      <Card
-        v-for="card in cards"
-        :card="card as Activity"
-        :key="card.ID"
-        :title="tab.title"
-        @click="
-          cardClick(tab!.title, card.ID as number, card.ID!, card.ActivityName)
-        "
-      />
-    </div>
-    <div v-else-if="tab?.showCard === 'NormalCard'">
-      <NormalCard
-        v-for="card in cards"
-        :card="card"
-        :key="card.ID"
-        @click="cardClick(tab!.title, card.ActivityID, card.ID!, card.Title)"
-      />
-    </div>
-  </van-list>
+    <van-list
+      v-model:loading="loading"
+      :finished="finished"
+      :error="error"
+      finished-text="没有更多了"
+      error-text="请求失败，刷新重试"
+      @load="onLoad"
+    >
+      <div v-if="tab?.showCard === 'Card'">
+        <Card
+          v-for="card in cards"
+          :card="card as Activity"
+          :key="card.ID"
+          :title="tab.title"
+          @click="
+            cardClick(
+              tab!.title,
+              card.ID as number,
+              card.ID!,
+              card.ActivityName
+            )
+          "
+        />
+      </div>
+      <div v-else-if="tab?.showCard === 'NormalCard'">
+        <NormalCard
+          v-for="card in cards"
+          :card="card"
+          :key="card.ID"
+          @click="cardClick(tab!.title, card.ActivityID, card.ID!, card.Title)"
+        />
+      </div>
+    </van-list>
+  </van-pull-refresh>
 </template>
 
 <script lang="ts" setup>
@@ -48,6 +59,12 @@ const props = defineProps({
     type: Array as PropType<Date[]>
   }
 })
+/* 刷新 */
+
+const onRefresh = async () => {
+  await onLoad()
+  loading.value = false
+}
 
 /* 列表 */
 const loading = ref(false)

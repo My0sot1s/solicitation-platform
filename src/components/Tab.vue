@@ -19,6 +19,8 @@
 
     <van-calendar
       type="multiple"
+      :min-date="new Date(new Date().getTime() - 3600000 * 24 * 365)"
+      :max-date="new Date(new Date().getTime() + 3600000 * 24 * 365)"
       v-model:show="showCalendar"
       @confirm="listFilter"
     />
