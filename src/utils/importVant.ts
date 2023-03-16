@@ -18,7 +18,9 @@ import {
   BackTop,
   Uploader,
   Calendar,
-  Toast
+  Toast,
+  Picker,
+  Popup
 } from 'vant'
 import 'vant/lib/index.css'
 
@@ -43,5 +45,7 @@ export default {
     app.use(Uploader)
     app.use(Calendar)
     app.use(Toast)
+    app.use(Picker)
+    app.use(Popup)
   }
 }

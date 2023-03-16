@@ -1,11 +1,20 @@
 <template>
   <van-form @submit="onSubmit" validate-first>
+    <FormItem title="征稿方：">
+      <van-field
+        v-model="form.SenderName"
+        name="target"
+        placeholder="请输入征稿方"
+        :rules="[{ required: true, message: '请输入征稿方' }]"
+      />
+    </FormItem>
     <FormItem title="起止日期">
       <van-field
         v-model="dateRange"
-        name="startDate"
+        name="dateRange"
         right-icon="calendar-o"
         readonly
+        placeholder="请选择起止日期"
         :rules="[{ required: true, message: '请选择起止日期' }]"
         @click="calendar.show = true"
       />
@@ -14,7 +23,8 @@
       <van-field
         v-model="form.ActivityName"
         name="title"
-        :rules="[{ required: true, message: '请输入标题' }]"
+        placeholder="请输入征稿主题"
+        :rules="[{ required: true, message: '请输入征稿主题' }]"
       />
     </FormItem>
     <FormItem title="描述：">
@@ -26,7 +36,8 @@
         clearable
         type="textarea"
         show-word-limit
-        :rules="[{ required: true, message: '请输入描述信息' }]"
+        placeholder="请输入详细描述"
+        :rules="[{ required: true, message: '请输入详细描述' }]"
         maxlength="300"
       />
     </FormItem>
@@ -36,8 +47,11 @@
         :rules="[{ required: true, message: '请选择封面图片' }]"
       >
         <template #input>
-          <!-- <van-uploader v-model="form.cover" :max-count="1" /> -->
-          <van-uploader :max-count="1" :after-read="uploadImg" />
+          <van-uploader
+            v-model="imgFile"
+            :max-count="1"
+            :after-read="uploadImg"
+          />
         </template>
       </van-field>
     </FormItem>
@@ -51,44 +65,57 @@
     </div>
   </van-form>
   <van-back-top target=".van-form" />
+  <!-- 日历 -->
   <van-calendar
     type="range"
+    ref="calendarElm"
     v-model:show="calendar.show"
     :max-date="new Date(new Date().getTime() + 365 * 24 * 3600 * 1000)"
     :show-confirm="false"
-    @confirm="onConfirm"
+    @confirm="confirmDate"
   >
     <template #footer>
-      <div class="footer">
-        <van-button round block type="primary" @click="longTerm"
-          >长期任务</van-button
-        >
+      <div class="calendar--footer">
+        <van-button round block type="primary" @click="longTerm">
+          长期任务
+        </van-button>
       </div>
     </template>
   </van-calendar>
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, watch, computed } from 'vue'
 import FormItem from '@/components/FormItem.vue'
+import type { Activity } from '@/types/activity'
 import type { adminForm } from '@/types/form'
-import { isValidKey } from '@/utils/isValidKey'
-import type { UploaderFileListItem } from 'vant'
+import type { CalendarInstance, UploaderFileListItem } from 'vant'
+import { uploadFile, newActivity, updateActivity } from '@/request/apis/admin'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const props = defineProps<{
-  formData?: adminForm
+  formData?: Activity
 }>()
 /* 表单 */
 const form = reactive<adminForm>({
+  SenderName: '',
   ActivityName: '',
   Description: '',
-  Photos: [{ Link: '' }],
-  EndTime: 0,
   StartTime: 0,
-  SenderName: ''
+  EndTime: 0,
+  ActivityPhotos: []
 })
-const dateRange = ref('')
+const dateRange = computed(() => {
+  if (!form?.EndTime) return ''
+  else if (new Date(form.EndTime) >= new Date('3000/1/1')) return '长期任务'
+  else
+    return `${new Date(form.StartTime).toLocaleDateString()}——${new Date(
+      form.EndTime
+    ).toLocaleDateString()}`
+})
 /* 日历 */
+const calendarElm = ref<CalendarInstance>()
 const calendar = reactive<{
   show: boolean
   type: string
@@ -96,38 +123,66 @@ const calendar = reactive<{
   show: false,
   type: ''
 })
-
-onMounted(() => {
-  if (props.formData) {
-    for (let k in form) {
-      if (isValidKey(k, form)) {
-        form[k] = props.formData[k]
-      }
-    }
-    dateRange.value = `${new Date(
-      form.StartTime
-    ).toLocaleDateString()}——${new Date(form.EndTime).toLocaleDateString()}`
-  }
-})
 /* 日期确认 */
-const onConfirm = (date: Array<Date>) => {
-  calendar.show = false
-  dateRange.value = `${date[0].toLocaleDateString()}——${date[1].toLocaleDateString()}`
+const confirmDate = (date: Array<Date>) => {
   form.StartTime = date[0].getTime()
   form.EndTime = date[1].getTime()
+  calendar.show = false
 }
 /* 点击长期任务 */
 const longTerm = () => {
-  dateRange.value = '长期任务'
+  calendarElm.value!.reset()
+  form.StartTime = Date.now()
+  form.EndTime = new Date('5000/1/1').getTime()
   calendar.show = false
 }
+/* 如果有传入formData则复制到form中 */
+watch(
+  () => props.formData,
+  () => {
+    if (props.formData) {
+      form.ActivityName = props.formData.ActivityName
+      form.Description = props.formData.Description
+      form.StartTime = new Date(props.formData.StartTime).getTime()
+      form.EndTime = new Date(props.formData.EndTime).getTime()
+      form.SenderName = props.formData.SenderName
+      const Link = props.formData.ActivityPhotos[0].Link
+      form.ActivityPhotos = [{ Link }]
+      imgFile.value = [{ url: Link }]
+    }
+  }
+)
+
 /* 选择图片 */
-const uploadImg = (items: UploaderFileListItem | UploaderFileListItem[]) => {
-  console.log(items)
+const imgFile = ref<UploaderFileListItem[]>()
+const uploadImg = async (
+  items: UploaderFileListItem | UploaderFileListItem[]
+) => {
+  if (!Array.isArray(items) && items.file) {
+    imgFile.value![0].status = 'uploading'
+    const res = await uploadFile(items.file)
+    if (res.code === 200) {
+      form.ActivityPhotos[0].Link = res.data.url
+      imgFile.value![0].status = 'done'
+    } else {
+      imgFile.value![0].status = 'failed'
+    }
+  }
 }
 /* 表单提交 */
-const onSubmit = (values: any) => {
-  console.log('submit', values)
+const onSubmit = async () => {
+  console.log(form)
+  let res: boolean
+  if (props.formData?.ID) {
+    res = await updateActivity(props.formData.ID, form)
+  } else {
+    res = await newActivity(form)
+  }
+  if (res) {
+    setTimeout(() => {
+      router.back()
+    }, 1000)
+  }
 }
 /* 删除活动 */
 const delActivity = () => {
@@ -140,6 +195,7 @@ const delActivity = () => {
   /* 这里必须设置高度和overflow:auto，backtop才能生效 */
   height: calc(100vh - 46.8px);
   overflow: auto;
+  padding-bottom: 100px;
 }
 
 .button {
@@ -155,7 +211,7 @@ const delActivity = () => {
   }
 }
 
-.footer {
+.calendar--footer {
   display: flex;
   justify-content: space-around;
 }

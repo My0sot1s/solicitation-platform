@@ -1,8 +1,8 @@
 import axios from '../config'
 import type { Activity } from '@/types/activity'
-import type { adminForm, userForm } from '@/types/form'
+import type { adminForm } from '@/types/form'
 
-async function adminLogin(wxCode: string) {
+async function adminLogin(wxCode: string): Promise<string> {
   const res = await axios.post('/admin/login', { code: wxCode })
   if (res.data.code === 200) {
     return res.data.data.token
@@ -26,28 +26,35 @@ async function adminNotStarted(): Promise<Activity[]> {
   return data.data
 }
 
-async function getDetail(ID: number): Promise<userForm[]> {
+async function getDetail(ID: number): Promise<Activity> {
   const { data } = await axios.post('/admin/articleDetail', { ID })
-  return data.data[0].Articles
+  return data.data[0]
 }
 
-async function newActivity(form: adminForm) {
-  const res = await axios.post('/admin/newActivity', { ...form })
+async function uploadFile(file: File) {
+  const { data } = await axios.put('/admin/upLoad', { file })
+  return data
+}
+
+async function newActivity(form: adminForm): Promise<boolean> {
+  const { data } = await axios.post('/admin/newActivity', { ...form })
+  if (data.code === 200) return true
+  else return false
+}
+
+async function updateActivity(ID: number, form: adminForm): Promise<boolean> {
+  const { data } = await axios.post('/admin/updateActivity', { ID, ...form })
+  if (data.code === 200) return true
+  else return false
+}
+
+function collection(ID: number) {
+  const res = axios.post('/admin/favorite', { ID })
   return res
 }
 
-async function updateActivity(form: adminForm) {
-  const res = await axios.post('/admin/updateActivity', { ...form })
-  return res
-}
-
-async function collection(ID: number) {
-  const res = await axios.post('/admin/favorite', { ID })
-  return res
-}
-
-async function skip(ID: number) {
-  const res = await axios.post('/admin/noFavorite', { ID })
+function skip(ID: number) {
+  const res = axios.post('/admin/noFavorite', { ID })
   return res
 }
 
@@ -57,6 +64,7 @@ export {
   adminFinished,
   adminNotStarted,
   getDetail,
+  uploadFile,
   newActivity,
   updateActivity,
   collection,

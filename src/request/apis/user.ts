@@ -13,6 +13,7 @@ async function userLogin(wxCode: string): Promise<string> {
 
 async function userGoing(): Promise<Activity[]> {
   const { data } = await axios.get('/user/going')
+  console.log(data)
   return data.data
 }
 

@@ -160,7 +160,7 @@ function checkFilled() {
 const onSubmit = async () => {
   console.log('submit', form)
   if (!checkFilled()) return
-  if (isEdit) {
+  if (isEdit.value) {
     await userUpdate(form)
   } else {
     await userNew(form)

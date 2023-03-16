@@ -11,10 +11,14 @@ export const adminRoutes: Array<RouteRecordRaw> = [
     name: 'manuscripts',
     path: '/admin/manuscripts/:ID',
     meta: { title: '' },
+    beforeEnter: (to) => {
+      to.meta.title = sessionStorage.activityName
+    },
     component: () => import('@/views/admin/Manuscripts.vue')
   },
   {
-    path: '/admin/audit',
+    name: 'audit',
+    path: '/admin/audit/:ID',
     meta: { title: '稿件详情' },
     component: () => import('@/views/admin/Audit.vue')
   },
@@ -29,7 +33,8 @@ export const adminRoutes: Array<RouteRecordRaw> = [
     component: () => import('@/views/admin/Setting.vue')
   },
   {
-    path: '/admin/edit',
+    name: 'edit',
+    path: '/admin/edit/:ID',
     meta: { title: '修改征稿' },
     component: () => import('@/views/admin/Edit.vue')
   }

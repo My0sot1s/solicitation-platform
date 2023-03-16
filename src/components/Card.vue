@@ -11,7 +11,12 @@
       <div class="description">
         {{ card?.Description }}
       </div>
-      <div class="time"><van-icon name="clock-o" />{{ date }}</div>
+      <div class="footer">
+        <div class="sender">
+          <van-icon name="contact" />{{ card?.SenderName }}
+        </div>
+        <div class="time"><van-icon name="clock-o" />{{ date }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -26,6 +31,7 @@ const props = defineProps({
 })
 
 const date = computed(() => {
+  if (new Date(props.card!.EndTime) >= new Date('3000/1/1')) return '长期任务'
   const date0 = new Date(props.card!.EndTime)
   return `${date0.getFullYear()}.${date0.getMonth() + 1}.${date0.getDate()}`
 })
@@ -75,12 +81,17 @@ const date = computed(() => {
       text-overflow: ellipsis;
       overflow: hidden;
     }
-    .time {
-      float: right;
-      color: #cbd5e1;
-      :first-child {
-        margin-right: 3.75px;
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      .time,
+      .sender {
         color: #cbd5e1;
+        :first-child {
+          margin-right: 3.75px;
+          color: #cbd5e1;
+        }
       }
     }
   }

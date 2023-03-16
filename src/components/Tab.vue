@@ -14,13 +14,14 @@
           <span>选择时间</span>
           <van-icon name="notes-o" size="175%" />
         </div>
-        <van-calendar
-          type="multiple"
-          v-model:show="showCalendar"
-          @confirm="listFilter"
-        />
       </template>
     </van-tabs>
+
+    <van-calendar
+      type="multiple"
+      v-model:show="showCalendar"
+      @confirm="listFilter"
+    />
   </div>
 </template>
 

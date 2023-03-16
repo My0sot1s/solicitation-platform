@@ -11,6 +11,8 @@ const axios = _axios.create({
   baseURL: '/api',
   timeout: 30000
 })
+// put请求用于上传文件
+axios.defaults.headers.put['Content-Type'] = 'multipart/form-data'
 
 // 请求拦截
 axios.interceptors.request.use(

@@ -34,10 +34,10 @@ const title = computed(() => {
 })
 
 const date = computed(() => {
+  if (props.card?.EndTime == '-1') return '长期任务'
   const date0 = new Date(props.card!.UpdatedAt as string)
   return `${date0.getFullYear()}.${date0.getMonth() + 1}.${date0.getDate()}`
 })
-// console.log(props.card, props.card?.Title)
 </script>
 
 <style lang="less" scoped>

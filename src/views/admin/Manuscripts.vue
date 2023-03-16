@@ -8,29 +8,31 @@ import type { TabsType } from '@/types/tab'
 import { getDetail } from '@/request/apis/admin'
 import { useRoute } from 'vue-router'
 import type { userForm } from '@/types/form'
-
-const route = useRoute()
-// 未处理
-async function getUncategorized(): Promise<userForm[]> {
-  const articles = await getDetail(parseInt(route.params.ID as string))
-  return articles.filter((article) => article.Status === 1)
-}
-// 已收藏
-async function getCollected(): Promise<userForm[]> {
-  const articles = await getDetail(parseInt(route.params.ID as string))
-  return articles.filter((article) => article.Status === 2)
-}
-// 已略过
-async function getSkipped(): Promise<userForm[]> {
-  const articles = await getDetail(parseInt(route.params.ID as string))
-  return articles.filter((article) => article.Status === 3)
-}
+import type { Activity } from '@/types/activity'
+import { useActivity } from '@/stores/activity'
 
 const tabs: TabsType = [
-  { title: '未分类', showCard: 'NormalCard', api: getUncategorized },
-  { title: '收藏', showCard: 'NormalCard', api: getCollected },
-  { title: '略过', showCard: 'NormalCard', api: getSkipped }
+  { title: '未分类', showCard: 'NormalCard', api: filterArticles(1) },
+  { title: '收藏', showCard: 'NormalCard', api: filterArticles(2) },
+  { title: '略过', showCard: 'NormalCard', api: filterArticles(3) }
 ]
+
+const route = useRoute()
+const activityStore = useActivity()
+let activity: Activity
+
+function filterArticles(status: number) {
+  return async function () {
+    if (!activity) {
+      activity = await getDetail(parseInt(route.params.ID as string))
+      // 保存，供稿件审核是直接获取，减少请求
+      activityStore.$state = activity
+    }
+    return activity.Articles.filter(
+      (article: userForm) => article.Status === status
+    )
+  }
+}
 </script>
 
 <style lang="less" scoped></style>

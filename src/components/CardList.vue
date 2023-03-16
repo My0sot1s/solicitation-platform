@@ -14,7 +14,7 @@
         :key="card.ID"
         :title="tab.title"
         @click="
-          cardClick(tab!.title, card.ID as number, undefined, card.ActivityName)
+          cardClick(tab!.title, card.ID as number, card.ID!, card.ActivityName)
         "
       />
     </div>
@@ -23,7 +23,7 @@
         v-for="card in cards"
         :card="card"
         :key="card.ID"
-        @click="cardClick(tab!.title, card.ActivityID, card.ID, card.Title)"
+        @click="cardClick(tab!.title, card.ActivityID, card.ID!, card.Title)"
       />
     </div>
   </van-list>
@@ -89,9 +89,11 @@ const cards = computed(() => {
     })
   }
 })
+
 /* 修改特定页面 title */
 onBeforeRouteLeave((to, from) => {
-  if (to.path.includes('/manuscripts') || from.path === '/home') {
+  if (to.path.includes('/manuscripts') || from.path === '#/home') {
+    sessionStorage.setItem('activityName', from.meta.next as string)
     to.meta.title = from.meta.next
   }
 })
@@ -99,7 +101,7 @@ onBeforeRouteLeave((to, from) => {
 const cardClick = (
   title: string,
   ActivityID: number,
-  ID?: number,
+  ID: number,
   ActivityName?: string
 ) => {
   if (route.path.includes('admin')) {
@@ -109,13 +111,19 @@ const cardClick = (
         route.meta.next = ActivityName
         router.push({
           name: 'manuscripts',
-          params: { ID: 1 }
+          params: { ID }
         })
       }
     } else if (route.path.includes('/manuscripts')) {
-      router.push('/admin/audit')
+      router.push({
+        name: 'audit',
+        params: { ID }
+      })
     } else if (route.path.includes('/setting')) {
-      router.push('/admin/Edit')
+      router.push({
+        name: 'edit',
+        params: { ID }
+      })
     }
   } else {
     switch (title) {

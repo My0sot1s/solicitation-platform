@@ -1,33 +1,34 @@
 <template>
   <div class="audit">
-    <div class="title">光盘行动——照片</div>
+    <div class="title">{{ article.Title }}</div>
     <div class="userInfo">
       <div class="userInfo-item userInfo__name">
         <van-icon name="contact" size="28" />
-        <span>李华</span>
+        <span>{{ article.Name }}</span>
       </div>
       <div class="userInfo-item userInfo__phone">
         <van-icon name="phone-o" size="28" />
-        <span>12121212121</span>
+        <span>{{ article.PhoneNum }}</span>
       </div>
     </div>
     <div class="content">
       <span>投稿内容</span>
-      <div class="content__text">在食堂光盘啦啦啦啦啦啦</div>
+      <div class="content__text">{{ article.Content }}</div>
       <div class="content__imgs">
-        <div
-          v-for="(i, index) in 5"
-          :key="i"
+        <van-image
+          v-for="(img, index) in 5"
+          :key="index"
           class="content__imgs--img"
-          :class="{ 'content__imgs--first-column': index % 4 === 0 }"
+          fit="fill"
+          src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
+        />
+        <!-- <div
+          v-for="(img, index) in article.Photos"
+          :key="index"
+          class="content__imgs--img"
         >
-          <van-image
-            width="19vw"
-            height="19vw"
-            fit="cover"
-            src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
-          />
-        </div>
+          <van-image width="19vw" height="19vw" fit="cover" :src="img.link" />
+        </div> -->
       </div>
     </div>
     <div class="button">
@@ -40,7 +41,17 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useRoute } from 'vue-router'
+import { useActivity } from '@/stores/activity'
+
+const route = useRoute()
+const activityStore = useActivity()
+
+const article = activityStore.Articles.filter(
+  (item) => item.ID === parseInt(route.params.ID as string)
+)[0]
+</script>
 
 <style lang="less" scoped>
 .audit {
@@ -92,25 +103,16 @@
     }
 
     &__imgs {
-      width: 100%;
-      margin-top: 4vh;
+      margin-top: 2vh;
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      grid-gap: 2vw;
 
       &--img {
-        float: left;
-        margin-left: 4vw;
-        margin-bottom: 3vw;
-      }
-
-      &--first-column {
-        margin-left: 0;
-      }
-
-      &::after {
-        content: '';
-        display: block;
-        height: 0;
-        clear: both;
-        visibility: hidden;
+        height: 28vw;
+        width: 28vw;
+        border-radius: 3px;
+        overflow: hidden;
       }
     }
   }
