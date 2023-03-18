@@ -11,6 +11,7 @@ import type { ActivityPhoto } from './activity'
   ActivityID：征稿活动ID
   ArticleID：文章ID
   Photos：上传的图片
+  ArticlePhotos：获取的图片
   UpdatedAt：更新时间
   ID？
   Activities？
@@ -31,13 +32,14 @@ type userForm = {
   'Link-3'?: string
   ActivityID?: number
   ArticleID?: number
-  Photos?: Array<{ link: string }>
+  Photos?: Array<ActivityPhoto>
+  ArticlePhotos?: Array<ActivityPhoto>
   UpdatedAt?: string /* 后端传回的数据 */
   ID?: number
   Activities?: { ActivityName: string; [proName: string]: any }[]
   StartTime?: string
   EndTime?: string
-  Status?: number // 未处理:1，已撤回:-1，收藏:2，略过：3
+  Status?: 1 | -1 | 2 | 3 // 未处理:1，已撤回:-1，收藏:2，略过：3
   [proName: string]: any
 }
 
@@ -45,19 +47,25 @@ type userForm = {
 管理员发布征稿表单:
   ActivityName：征稿主题
   Description：主题描述
-  ActivityPhotos：封面图片地址
-  EndTime：截止时间
-  StartTime：开始时间
+  Photos：上传的封面图片
+  EndTime：截止时间---------\
+                            >上传的格式为时间戳数字，获取的格式为当地时间字符串
+  StartTime：开始时间-------/
   SenderName：征稿方（融媒体 | 桑梓）
 */
-type adminForm = {
+type activityForm = {
   ActivityName: string
   Description: string
   Photos: ActivityPhoto[]
-  // 上传的时间格式为时间戳数字，获取的格式为当地时间字符串
   EndTime: string | number
   StartTime: string | number
   SenderName: string
 }
 
-export type { userForm, adminForm }
+type addAdminForm = {
+  IsSuperAdmin: 0 | 1
+  Note: string
+  StuNum?: number
+}
+
+export type { userForm, activityForm, addAdminForm }

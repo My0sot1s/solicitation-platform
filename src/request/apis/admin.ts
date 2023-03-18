@@ -1,6 +1,6 @@
 import axios from '../config'
 import type { Activity } from '@/types/activity'
-import type { adminForm } from '@/types/form'
+import type { activityForm, addAdminForm } from '@/types/form'
 
 async function adminLogin(wxCode: string): Promise<string> {
   const res = await axios.post('/admin/login', { code: wxCode })
@@ -9,6 +9,23 @@ async function adminLogin(wxCode: string): Promise<string> {
   } else {
     return res.data.msg
   }
+}
+
+async function getAdminList() {
+  const { data } = await axios.get('/admin/adminList')
+  return data.data
+}
+
+async function addAdmin(form: addAdminForm) {
+  const { data } = await axios.post('/admin/addAdmin', form)
+  if (data.code === 200) return true
+  else return false
+}
+
+async function deleteAdmin(StuNum: number) {
+  const { data } = await axios.post('/admin/deleteAdmin', { StuNum })
+  if (data.code === 200) return true
+  else return false
 }
 
 async function adminGoing(): Promise<Activity[]> {
@@ -36,14 +53,20 @@ async function uploadFile(file: File) {
   return data
 }
 
-async function newActivity(form: adminForm): Promise<boolean> {
+async function newActivity(form: activityForm) {
   const { data } = await axios.post('/admin/newActivity', { ...form })
   if (data.code === 200) return true
   else return false
 }
 
-async function updateActivity(ID: number, form: adminForm): Promise<boolean> {
+async function updateActivity(ID: number, form: activityForm) {
   const { data } = await axios.post('/admin/updateActivity', { ID, ...form })
+  if (data.code === 200) return true
+  else return false
+}
+
+async function deleteActivity(ID: number) {
+  const { data } = await axios.post('/admin/deleteActivity', { ID })
   if (data.code === 200) return true
   else return false
 }
@@ -69,6 +92,10 @@ export {
   uploadFile,
   newActivity,
   updateActivity,
+  deleteActivity,
   collection,
-  skip
+  skip,
+  getAdminList,
+  addAdmin,
+  deleteAdmin
 }

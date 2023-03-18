@@ -1,13 +1,13 @@
 <template>
   <van-pull-refresh
-    v-model="loading"
-    success-text="刷新成功"
+    v-model="refresh.loading"
+    :success-text="refresh.text"
     @refresh="onRefresh"
   >
     <van-list
-      v-model:loading="loading"
-      :finished="finished"
-      :error="error"
+      v-model:loading="loadList.loading"
+      :finished="loadList.finished"
+      :error="loadList.error"
       finished-text="没有更多了"
       error-text="请求失败，刷新重试"
       @load="onLoad"
@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { type PropType, computed } from 'vue'
 import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router'
 import type { TabType } from '@/types/tab'
@@ -60,29 +60,37 @@ const props = defineProps({
   }
 })
 /* 刷新 */
-
+const refresh = reactive({
+  loading: false,
+  text: ''
+})
 const onRefresh = async () => {
   await onLoad()
-  loading.value = false
+  refresh.text = loadList.error ? '请求失败' : '刷新成功'
+  refresh.loading = false
 }
 
 /* 列表 */
-const loading = ref(false)
-const finished = ref(false)
-const error = ref(false)
-const cards0 = ref<Activity[] | userForm[]>([])
+const loadList = reactive({
+  loading: false,
+  finished: false,
+  error: false
+})
+
+const tempCards = ref<Activity[] | userForm[]>([])
 const onLoad = async () => {
   try {
-    cards0.value = await props.tab!.api()
-    finished.value = true
+    tempCards.value = await props.tab!.api()
+    loadList.finished = true
+    loadList.error = false
   } catch (e) {
-    error.value = true
+    loadList.error = true
   }
-  loading.value = false
+  loadList.loading = false
 }
 const cards = computed(() => {
   if (props.tab?.showCard === 'Card') {
-    return (cards0.value as Activity[]).filter((e) => {
+    return (tempCards.value as Activity[]).filter((e) => {
       if (!props.dates?.length) {
         return true
       } else {
@@ -92,7 +100,7 @@ const cards = computed(() => {
       }
     })
   } else {
-    return (cards0.value as userForm[]).filter((e) => {
+    return (tempCards.value as userForm[]).filter((e) => {
       if (!props.dates?.length) {
         return true
       } else {
@@ -136,7 +144,7 @@ const cardClick = (
         name: 'audit',
         params: { ID }
       })
-    } else if (route.path.includes('/setting')) {
+    } else if (route.path.includes('/activitys')) {
       router.push({
         name: 'edit',
         params: { ID }

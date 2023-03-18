@@ -49,16 +49,14 @@
           <van-field
             :right-icon="index == len ? 'close' : ''"
             @click-right-icon="del(index)"
-            v-model="form[('Link-' + index) as keyof userForm] as string"
+            v-model="form['Link-' + index]"
           />
         </van-cell-group>
       </div>
       <div class="input-block" v-show="len >= index">
         <div class="title">描述{{ index }}：</div>
         <van-cell-group inset>
-          <van-field
-            v-model="form[('Description-' + index) as keyof userForm] as string"
-          />
+          <van-field v-model="form['Description-' + index]" />
         </van-cell-group>
       </div>
     </template>
@@ -116,7 +114,7 @@ const imgs = ref<UploaderFileListItem[]>()
 watch(imgs, (val) => {
   form.Photos = val!.map((item) => {
     return {
-      link: item.url as string
+      Link: item.url as string
     }
   })
   console.log(form.Photos)
