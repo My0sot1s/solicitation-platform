@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onActivated } from 'vue'
 import { type PropType, computed } from 'vue'
 import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router'
 import type { TabType } from '@/types/tab'
@@ -69,6 +69,10 @@ const onRefresh = async () => {
   refresh.text = loadList.error ? '请求失败' : '刷新成功'
   refresh.loading = false
 }
+
+onActivated(() => {
+  if (route.name === 'manuscripts') onRefresh()
+})
 
 /* 列表 */
 const loadList = reactive({

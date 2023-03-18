@@ -23,7 +23,8 @@ import {
   Popup,
   PullRefresh,
   SwipeCell,
-  Switch
+  Switch,
+  TextEllipsis
 } from 'vant'
 import 'vant/lib/index.css'
 
@@ -53,5 +54,6 @@ export default {
     app.use(PullRefresh)
     app.use(SwipeCell)
     app.use(Switch)
+    app.use(TextEllipsis)
   }
 }

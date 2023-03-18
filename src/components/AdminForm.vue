@@ -1,87 +1,89 @@
 <template>
-  <van-form @submit="onSubmit" validate-first scroll-to-error>
-    <FormItem title="征稿方：">
-      <van-field
-        v-model="form.SenderName"
-        name="target"
-        placeholder="请输入征稿方"
-        :rules="[{ required: true, message: '请输入征稿方' }]"
-      />
-    </FormItem>
-    <FormItem title="起止日期">
-      <van-field
-        v-model="dateRange"
-        name="dateRange"
-        right-icon="calendar-o"
-        readonly
-        placeholder="请选择起止日期"
-        :rules="[{ required: true, message: '请选择起止日期' }]"
-        @click="calendar.show = true"
-      />
-    </FormItem>
-    <FormItem title="题目：">
-      <van-field
-        v-model="form.ActivityName"
-        name="title"
-        placeholder="请输入征稿主题"
-        :rules="[{ required: true, message: '请输入征稿主题' }]"
-      />
-    </FormItem>
-    <FormItem title="描述：">
-      <van-field
-        v-model="form.Description"
-        name="description"
-        rows="3"
-        autosize
-        clearable
-        type="textarea"
-        show-word-limit
-        placeholder="请输入详细描述"
-        :rules="[{ required: true, message: '请输入详细描述' }]"
-        maxlength="300"
-      />
-    </FormItem>
-    <FormItem title="封面图片：">
-      <van-field
-        name="cover"
-        :rules="[{ required: true, message: '请选择封面图片' }]"
-      >
-        <template #input>
-          <van-uploader
-            v-model="imgFile"
-            :max-count="1"
-            :after-read="uploadImg"
-          />
-        </template>
-      </van-field>
-    </FormItem>
-    <div class="button-submit">
-      <van-button round block type="default" native-type="submit">
-        {{ formData ? '提交更改' : '提交' }}
-      </van-button>
-    </div>
-    <div v-if="formData" class="button-delete" @click="delActivity">
-      删除活动
-    </div>
-  </van-form>
-  <van-back-top target=".van-form" />
-  <!-- 日历 -->
-  <van-calendar
-    type="range"
-    ref="calendarElm"
-    v-model:show="calendar.show"
-    :max-date="new Date(new Date().getTime() + 365 * 24 * 3600 * 1000)"
-    :show-confirm="false"
-    @confirm="confirmDate"
-  >
-    <template #footer>
-      <div class="calendar--footer">
-        <van-button round block type="primary" @click="longTerm">
-          长期任务
+  <div>
+    <van-form @submit="onSubmit" validate-first scroll-to-error>
+      <FormItem title="征稿方：">
+        <van-field
+          v-model="form.SenderName"
+          name="target"
+          placeholder="请输入征稿方"
+          :rules="[{ required: true, message: '请输入征稿方' }]"
+        />
+      </FormItem>
+      <FormItem title="起止日期">
+        <van-field
+          v-model="dateRange"
+          name="dateRange"
+          right-icon="calendar-o"
+          readonly
+          placeholder="请选择起止日期"
+          :rules="[{ required: true, message: '请选择起止日期' }]"
+          @click="calendar.show = true"
+        />
+      </FormItem>
+      <FormItem title="题目：">
+        <van-field
+          v-model="form.ActivityName"
+          name="title"
+          placeholder="请输入征稿主题"
+          :rules="[{ required: true, message: '请输入征稿主题' }]"
+        />
+      </FormItem>
+      <FormItem title="描述：">
+        <van-field
+          v-model="form.Description"
+          name="description"
+          rows="3"
+          autosize
+          clearable
+          type="textarea"
+          show-word-limit
+          placeholder="请输入详细描述"
+          :rules="[{ required: true, message: '请输入详细描述' }]"
+          maxlength="300"
+        />
+      </FormItem>
+      <FormItem title="封面图片：">
+        <van-field
+          name="cover"
+          :rules="[{ required: true, message: '请选择封面图片' }]"
+        >
+          <template #input>
+            <van-uploader
+              v-model="imgFile"
+              :max-count="1"
+              :after-read="uploadImg"
+            />
+          </template>
+        </van-field>
+      </FormItem>
+      <div class="button-submit">
+        <van-button round block type="default" native-type="submit">
+          {{ formData ? '提交更改' : '提交' }}
         </van-button>
       </div>
-    </template>
-  </van-calendar>
+      <div v-if="formData" class="button-delete" @click="delActivity">
+        删除活动
+      </div>
+    </van-form>
+    <van-back-top target=".van-form" />
+    <!-- 日历 -->
+    <van-calendar
+      type="range"
+      ref="calendarElm"
+      v-model:show="calendar.show"
+      :max-date="new Date(new Date().getTime() + 365 * 24 * 3600 * 1000)"
+      :show-confirm="false"
+      @confirm="confirmDate"
+    >
+      <template #footer>
+        <div class="calendar--footer">
+          <van-button round block type="primary" @click="longTerm">
+            长期任务
+          </van-button>
+        </div>
+      </template>
+    </van-calendar>
+  </div>
 </template>
 
 <script lang="ts" setup>

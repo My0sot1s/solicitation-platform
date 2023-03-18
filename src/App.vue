@@ -8,8 +8,9 @@
     />
     <router-view v-slot="{ Component }">
       <transition name="van-fade">
-        <!-- Component inside <Transition> renders non-element root node that cannot be animated.  -->
-        <div><component :is="Component" /></div>
+        <keep-alive :exclude="exclude">
+          <component :is="Component" />
+        </keep-alive>
       </transition>
     </router-view>
     <van-tabbar route v-if="route.path.includes('admin') && route.meta.showTab">
@@ -32,6 +33,14 @@
 import { RouterView, useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
+
+const exclude = [
+  'NewActivity',
+  'EditActivity',
+  'ManageAdmin',
+  'New',
+  'MySubmission'
+]
 const onClickLeft = () => {
   if (route.meta.title !== '稿件征集') {
     history.back()

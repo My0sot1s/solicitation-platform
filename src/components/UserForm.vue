@@ -1,78 +1,80 @@
 <template>
-  <van-form @submit="onSubmit">
-    <div class="input-block">
-      <div class="title">您的姓名/昵称：</div>
-      <van-cell-group inset>
-        <van-field clickable v-model="form.Name" />
-      </van-cell-group>
-    </div>
-    <div class="input-block">
-      <div class="title">您的电话号码：</div>
-      <van-cell-group inset>
-        <van-field clickable v-model="form.PhoneNum" type="tel" />
-      </van-cell-group>
-    </div>
-    <div class="input-block">
-      <div class="title">内容的标题：</div>
-      <van-cell-group inset>
-        <van-field clickable v-model="form.Title" />
-      </van-cell-group>
-    </div>
-    <div class="input-block">
-      <div class="title">想要分享的内容（文字）：</div>
-      <van-cell-group inset>
-        <van-field
-          clickable
-          v-model="form.Content"
-          rows="3"
-          autosize
-          type="textarea"
-          show-word-limit
-          maxlength="300"
-        />
-      </van-cell-group>
-    </div>
-    <div class="input-block">
-      <div class="title">想要分享的内容（图片）：</div>
-      <van-cell-group inset>
-        <van-field name="uploader">
-          <template #input>
-            <van-uploader v-model="imgs" />
-          </template>
-        </van-field>
-      </van-cell-group>
-    </div>
-    <template v-for="index in [1, 2, 3]" :key="index">
-      <div class="input-block" v-show="len >= index">
-        <div class="title">链接{{ index }}：</div>
+  <div>
+    <van-form @submit="onSubmit">
+      <div class="input-block">
+        <div class="title">您的姓名/昵称：</div>
+        <van-cell-group inset>
+          <van-field clickable v-model="form.Name" />
+        </van-cell-group>
+      </div>
+      <div class="input-block">
+        <div class="title">您的电话号码：</div>
+        <van-cell-group inset>
+          <van-field clickable v-model="form.PhoneNum" type="tel" />
+        </van-cell-group>
+      </div>
+      <div class="input-block">
+        <div class="title">内容的标题：</div>
+        <van-cell-group inset>
+          <van-field clickable v-model="form.Title" />
+        </van-cell-group>
+      </div>
+      <div class="input-block">
+        <div class="title">想要分享的内容（文字）：</div>
         <van-cell-group inset>
           <van-field
-            :right-icon="index == len ? 'close' : ''"
-            @click-right-icon="del(index)"
-            v-model="form['Link-' + index]"
+            clickable
+            v-model="form.Content"
+            rows="3"
+            autosize
+            type="textarea"
+            show-word-limit
+            maxlength="300"
           />
         </van-cell-group>
       </div>
-      <div class="input-block" v-show="len >= index">
-        <div class="title">描述{{ index }}：</div>
+      <div class="input-block">
+        <div class="title">想要分享的内容（图片）：</div>
         <van-cell-group inset>
-          <van-field v-model="form['Description-' + index]" />
+          <van-field name="uploader">
+            <template #input>
+              <van-uploader v-model="imgs" />
+            </template>
+          </van-field>
         </van-cell-group>
       </div>
-    </template>
-    <div style="margin: 16px 16px 10vw 16px">
-      <van-button icon="plus" size="large" @click="len++" v-show="len < 3"
-        >添加更多...</van-button
-      >
-    </div>
-    <div style="margin: 32px">
-      <van-button round block type="default" native-type="submit">
-        提交
-      </van-button>
-    </div>
-    <div class="cancel" v-if="isEdit" @click="confirmCancel">删除投稿</div>
-  </van-form>
-  <van-back-top target=".van-form" />
+      <template v-for="index in [1, 2, 3]" :key="index">
+        <div class="input-block" v-show="len >= index">
+          <div class="title">链接{{ index }}：</div>
+          <van-cell-group inset>
+            <van-field
+              :right-icon="index == len ? 'close' : ''"
+              @click-right-icon="del(index)"
+              v-model="form['Link-' + index]"
+            />
+          </van-cell-group>
+        </div>
+        <div class="input-block" v-show="len >= index">
+          <div class="title">描述{{ index }}：</div>
+          <van-cell-group inset>
+            <van-field v-model="form['Description-' + index]" />
+          </van-cell-group>
+        </div>
+      </template>
+      <div style="margin: 16px 16px 10vw 16px">
+        <van-button icon="plus" size="large" @click="len++" v-show="len < 3"
+          >添加更多...</van-button
+        >
+      </div>
+      <div style="margin: 32px">
+        <van-button round block type="default" native-type="submit">
+          提交
+        </van-button>
+      </div>
+      <div class="cancel" v-if="isEdit" @click="confirmCancel">删除投稿</div>
+    </van-form>
+    <van-back-top target=".van-form" />
+  </div>
 </template>
 
 <script lang="ts" setup>

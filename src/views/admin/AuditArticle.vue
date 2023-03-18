@@ -13,7 +13,13 @@
     </div>
     <div class="content">
       <span>投稿内容</span>
-      <div class="content__text">{{ article.Content }}</div>
+      <div
+        class="content__text"
+        v-if="article.Content"
+        @click="useCopy(article.Content!)"
+      >
+        {{ article.Content }}
+      </div>
       <div class="content__imgs">
         <van-image
           v-for="(img, index) in article.ArticlePhotos"
@@ -23,6 +29,18 @@
           fit="fill"
           :src="img.Link"
         />
+      </div>
+      <div class="content__links">
+        <van-cell
+          v-for="(link, index) in links"
+          :key="index"
+          is-link
+          :url="link.Link"
+        >
+          <template #title>
+            <van-text-ellipsis :content="link.Description" />
+          </template>
+        </van-cell>
       </div>
     </div>
     <div v-if="article.Status === 1" class="button">
@@ -46,6 +64,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useActivity } from '@/stores/activity'
 import { collection, skip } from '@/request/apis/admin'
 import { showConfirmDialog, showImagePreview } from 'vant'
+import { useCopy } from '@/utils/useCopy'
 
 const route = useRoute()
 const router = useRouter()
@@ -58,6 +77,19 @@ const article = activityStore.Articles.filter(
 const photos = article.ArticlePhotos?.map((item) => {
   return item.Link
 })
+
+const links: Array<{ Description: string; Link: string }> = []
+for (let i = 1; i <= 3; i++) {
+  let key1 = 'Description-' + i
+  let key2 = 'Link-' + i
+  if (article[key1] && article[key2]) {
+    if (article[key2].match(/^w/)) article[key2] = `http://${article[key2]}`
+    links.push({
+      Description: article[key1] + `(${article[key2]})`,
+      Link: article[key2]
+    })
+  }
+}
 
 const previewImg = (index: number) => {
   if (photos == undefined) return
@@ -72,9 +104,10 @@ const onSkip = () => {
     title: '确认略过'
   }).then(async () => {
     if (await skip(article.ID!)) {
+      article.Status = 3
       setTimeout(() => {
         router.back()
-      }, 500)
+      }, 300)
     }
   })
 }
@@ -84,9 +117,10 @@ const onCollection = () => {
     title: '确认收藏'
   }).then(async () => {
     if (await collection(article.ID!)) {
+      article.Status = 2
       setTimeout(() => {
         router.back()
-      }, 500)
+      }, 300)
     }
   })
 }
@@ -183,5 +217,11 @@ const onCollection = () => {
       }
     }
   }
+}
+
+.van-cell {
+  margin-top: 3vw;
+  box-shadow: 0px 0px 10px #ddd;
+  border-radius: 6px;
 }
 </style>

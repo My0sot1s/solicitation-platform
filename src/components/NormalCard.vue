@@ -1,12 +1,14 @@
 <template>
   <div>
     <van-cell-group>
-      <van-cell
-        :title="title"
-        :value="date"
-        :label="props.card?.Title"
-        is-link
-      />
+      <van-cell :title="activityName" :value="date" is-link>
+        <template #title v-if="!activityName">
+          <van-text-ellipsis :content="props.card?.Name" />
+        </template>
+        <template #label v-if="props.card?.Title">
+          <van-text-ellipsis :content="props.card?.Title" />
+        </template>
+      </van-cell>
     </van-cell-group>
   </div>
 </template>
@@ -22,12 +24,13 @@ const props = defineProps({
   card: Object as PropType<Activity | userForm>
 })
 
-const title = computed(() => {
+const activityName = computed(() => {
   if (isActivity(props.card!)) {
     return props.card.ActivityName
   } else {
     // props.card.Activities 可能为空
-    return Array.isArray(props.card?.Activities)
+    return Array.isArray(props.card?.Activities) &&
+      props.card!.Activities!.length > 0
       ? props.card?.Activities[0].ActivityName
       : ''
   }

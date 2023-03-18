@@ -27,23 +27,8 @@ function filterArticles(status: number) {
       activity = await getDetail(parseInt(route.params.ID as string))
       // 保存，供稿件审核是直接获取，减少请求
       activityStore.$state = activity
-      // 模拟数据
-      activityStore.$patch((state) => {
-        const temp = []
-        for (let i = 0; i < 5; i++) {
-          temp.push({
-            ArticleID: 1,
-            CreatedAt: '2023-03-15T00:00:20.707+08:00',
-            DeletedAt: null,
-            ID: i + 1,
-            Link: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg',
-            UpdatedAt: '2023-03-15T00:00:20.707+08:00'
-          })
-        }
-        state.Articles[0].ArticlePhotos = temp
-      })
     }
-    return activity.Articles.filter(
+    return activityStore.$state.Articles.filter(
       (article: userForm) => article.Status === status
     )
   }
