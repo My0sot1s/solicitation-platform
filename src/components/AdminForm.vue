@@ -88,9 +88,14 @@
 import { ref, reactive, watch, computed } from 'vue'
 import FormItem from '@/components/FormItem.vue'
 import type { Activity } from '@/types/activity'
-import type { adminForm } from '@/types/form'
+import type { activityForm } from '@/types/form'
 import type { CalendarInstance, UploaderFileListItem } from 'vant'
-import { uploadFile, newActivity, updateActivity } from '@/request/apis/admin'
+import {
+  uploadFile,
+  newActivity,
+  updateActivity,
+  deleteActivity
+} from '@/request/apis/admin'
 import { showConfirmDialog } from 'vant'
 import { useRouter } from 'vue-router'
 
@@ -99,7 +104,7 @@ const props = defineProps<{
   formData?: Activity
 }>()
 /* 表单 */
-const form = reactive<adminForm>({
+const form = reactive<activityForm>({
   SenderName: '',
   ActivityName: '',
   Description: '',
@@ -188,7 +193,7 @@ const onSubmit = () => {
     if (res) {
       setTimeout(() => {
         router.back()
-      }, 500)
+      }, 300)
     }
   })
 }
@@ -197,8 +202,13 @@ const delActivity = () => {
   showConfirmDialog({
     title: '确认删除',
     message: '删除后不可找回！'
-  }).then(() => {
-    console.log('删除')
+  }).then(async () => {
+    let res = await deleteActivity(props.formData!.ID)
+    if (res) {
+      setTimeout(() => {
+        router.back()
+      }, 300)
+    }
   })
 }
 </script>

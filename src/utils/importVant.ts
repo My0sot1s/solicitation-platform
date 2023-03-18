@@ -21,7 +21,9 @@ import {
   Toast,
   Picker,
   Popup,
-  PullRefresh
+  PullRefresh,
+  SwipeCell,
+  Switch
 } from 'vant'
 import 'vant/lib/index.css'
 
@@ -49,5 +51,7 @@ export default {
     app.use(Picker)
     app.use(Popup)
     app.use(PullRefresh)
+    app.use(SwipeCell)
+    app.use(Switch)
   }
 }

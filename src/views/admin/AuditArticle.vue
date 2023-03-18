@@ -16,19 +16,13 @@
       <div class="content__text">{{ article.Content }}</div>
       <div class="content__imgs">
         <van-image
-          v-for="(img, index) in 5"
+          v-for="(img, index) in article.ArticlePhotos"
+          @click="previewImg(index)"
           :key="index"
           class="content__imgs--img"
           fit="fill"
-          src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
+          :src="img.Link"
         />
-        <!-- <div
-          v-for="(img, index) in article.Photos"
-          :key="index"
-          class="content__imgs--img"
-        >
-          <van-image width="19vw" height="19vw" fit="cover" :src="img.link" />
-        </div> -->
       </div>
     </div>
     <div v-if="article.Status === 1" class="button">
@@ -51,7 +45,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useActivity } from '@/stores/activity'
 import { collection, skip } from '@/request/apis/admin'
-import { showConfirmDialog } from 'vant'
+import { showConfirmDialog, showImagePreview } from 'vant'
 
 const route = useRoute()
 const router = useRouter()
@@ -60,6 +54,18 @@ const activityStore = useActivity()
 const article = activityStore.Articles.filter(
   (item) => item.ID === parseInt(route.params.ID as string)
 )[0]
+
+const photos = article.ArticlePhotos?.map((item) => {
+  return item.Link
+})
+
+const previewImg = (index: number) => {
+  if (photos == undefined) return
+  showImagePreview({
+    images: photos,
+    startPosition: index
+  })
+}
 
 const onSkip = () => {
   showConfirmDialog({

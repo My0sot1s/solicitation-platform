@@ -55,7 +55,7 @@ const onClickLeft = () => {
   padding: 0;
   box-sizing: border-box;
   font-family: 微软雅黑;
-  color: #475569;
+  // color: #475569;
 }
 .van-toast .van-toast__text,
 .van-toast .van-badge__wrapper {

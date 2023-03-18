@@ -1,21 +1,31 @@
 <template>
-  <Tab :tabs="tabs" />
+  <div>
+    <div @click="router.push('/admin/activitys')" class="item">
+      征稿活动编辑
+    </div>
+    <div @click="router.push('/admin/manageAdmin')" class="item">
+      管理员设置
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import Tab from '@/components/Tab.vue'
-import type { TabsType } from '@/types/tab'
-import {
-  adminGoing,
-  adminNotStarted,
-  adminFinished
-} from '@/request/apis/admin'
+import { useRouter } from 'vue-router'
 
-const tabs: TabsType = [
-  { title: '进行中', showCard: 'NormalCard', api: adminGoing },
-  { title: '未开始', showCard: 'NormalCard', api: adminNotStarted },
-  { title: '已结束', showCard: 'NormalCard', api: adminFinished }
-]
+const router = useRouter()
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.item {
+  display: flex;
+  align-items: center;
+  margin: 3vh auto;
+  width: 86vw;
+  padding-left: 4vw;
+  height: 8vh;
+  border-radius: 10px;
+  box-shadow: 1px 1px 10px #ccc;
+  font-size: 2.2vh;
+  color: #555;
+}
+</style>

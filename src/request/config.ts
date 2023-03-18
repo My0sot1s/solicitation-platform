@@ -55,7 +55,7 @@ axios.interceptors.response.use(
     return response
   },
   async (error) => {
-    showFailToast(error)
+    showFailToast('请求错误')
     console.dir(error)
   }
 )
