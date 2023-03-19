@@ -38,7 +38,12 @@
         <van-cell-group inset>
           <van-field name="uploader">
             <template #input>
-              <van-uploader v-model="imgs" />
+              <van-uploader
+                :after-read="uploadImg"
+                :before-delete="delPhoto"
+                multiple
+                v-model="imgs"
+              />
             </template>
           </van-field>
         </van-cell-group>
@@ -78,7 +83,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, watch, onBeforeMount } from 'vue'
+import { ref, reactive, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   userNew,
@@ -89,6 +94,7 @@ import {
 import { showFailToast, showConfirmDialog } from 'vant'
 import type { userForm } from '@/types/form'
 import type { UploaderFileListItem } from 'vant'
+import { upLoadPhoto } from '@/request/apis/user'
 const route = useRoute()
 const router = useRouter()
 const isEdit = ref(false)
@@ -113,14 +119,29 @@ function del(index: number): void {
 }
 
 const imgs = ref<UploaderFileListItem[]>()
-watch(imgs, (val) => {
-  form.Photos = val!.map((item) => {
-    return {
-      Link: item.url as string
-    }
-  })
-  console.log(form.Photos)
-})
+// 上传图片
+const uploadImg = async (
+  items: UploaderFileListItem | UploaderFileListItem[]
+) => {
+  if (!Array.isArray(items)) items = [items]
+  for (let index in items) {
+    const item = items[index]
+    item.status = 'uploading'
+    upLoadPhoto(item.file!).then((res) => {
+      if (res.code === 200) {
+        if (!form.Photos) form.Photos = []
+        form.Photos[index] = { Link: res.data.url }
+        item.status = 'done'
+      } else {
+        item.status = 'failed'
+      }
+    })
+  }
+}
+const delPhoto = (item: UploaderFileListItem, index: number) => {
+  form.Photos?.splice(index, 1)
+  return true
+}
 
 function checkName() {
   if (form.Name) {

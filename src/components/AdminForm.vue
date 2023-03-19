@@ -100,6 +100,7 @@ import {
 } from '@/request/apis/admin'
 import { showConfirmDialog } from 'vant'
 import { useRouter } from 'vue-router'
+import { compressImg } from '@/utils/compressImg'
 
 const router = useRouter()
 const props = defineProps<{
@@ -170,13 +171,14 @@ const uploadImg = async (
   items: UploaderFileListItem | UploaderFileListItem[]
 ) => {
   if (!Array.isArray(items) && items.file) {
-    imgFile.value![0].status = 'uploading'
-    const res = await uploadFile(items.file)
+    items.status = 'uploading'
+    const file = await compressImg(items)
+    const res = await uploadFile(file)
     if (res.code === 200) {
       form.Photos[0].Link = res.data.url
-      imgFile.value![0].status = 'done'
+      items.status = 'done'
     } else {
-      imgFile.value![0].status = 'failed'
+      items.status = 'failed'
     }
   }
 }

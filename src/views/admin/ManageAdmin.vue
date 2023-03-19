@@ -79,7 +79,6 @@ async function onLoad() {
   loadList.loading = false
   loadList.finished = true
 }
-
 // 弹窗
 const showPopup = ref(false)
 // 开关
@@ -88,21 +87,28 @@ const checked = ref(false)
 const form = reactive<addAdminForm>({
   IsSuperAdmin: 0,
   Note: '',
-  StuNum: undefined
+  StuNum: ''
 })
 watch(checked, () => {
   form.IsSuperAdmin = checked.value ? 1 : 0
 })
+// 清空表单
+const resetForm = () => {
+  form.Note = ''
+  form.StuNum = ''
+  checked.value = false
+}
 // 添加管理员
 async function onSubmit() {
-  console.log(form)
   if (await addAdmin(form)) {
-    showPopup.value = true
+    await onLoad()
+    showPopup.value = false
+    resetForm()
   }
 }
 // 删除管理员
 async function delAdmin(index: number, item: addAdminForm) {
-  if (await deleteAdmin(item.StuNum!)) {
+  if (await deleteAdmin(parseInt(item.StuNum))) {
     list.value!.splice(index, 1)
   }
 }

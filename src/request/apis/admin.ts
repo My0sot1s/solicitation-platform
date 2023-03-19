@@ -59,8 +59,11 @@ async function newActivity(form: activityForm) {
   else return false
 }
 
-async function updateActivity(ID: number, form: activityForm) {
-  const { data } = await axios.post('/admin/updateActivity', { ID, ...form })
+async function updateActivity(ActivityID: number, form: activityForm) {
+  const { data } = await axios.post('/admin/updateActivity', {
+    ActivityID,
+    ...form
+  })
   if (data.code === 200) return true
   else return false
 }

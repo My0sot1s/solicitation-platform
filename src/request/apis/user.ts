@@ -46,6 +46,11 @@ async function userUpdate(form: userForm): Promise<string> {
   const { data } = await axios.post('/user/update', form)
   return data.data
 }
+
+async function upLoadPhoto(file: File) {
+  const { data } = await axios.put('/user/upLoad', { file })
+  return data
+}
 export {
   userLogin,
   userGoing,
@@ -54,5 +59,6 @@ export {
   myArticle,
   userDetail,
   userDelete,
-  userUpdate
+  userUpdate,
+  upLoadPhoto
 }

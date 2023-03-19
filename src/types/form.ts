@@ -65,7 +65,7 @@ type activityForm = {
 type addAdminForm = {
   IsSuperAdmin: 0 | 1
   Note: string
-  StuNum?: number
+  StuNum: string
 }
 
 export type { userForm, activityForm, addAdminForm }
