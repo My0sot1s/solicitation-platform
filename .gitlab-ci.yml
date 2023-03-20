@@ -1,0 +1,33 @@
+stages:
+  - build
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+
+build:
+  stage: build
+  image: node:14
+  script: 
+    - npm --registry https://registry.npm.taobao.org install express
+    - npm install
+    - npm run build
+  artifacts: 
+    paths:
+        - dist/
+
+deploy:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+    - apk update && apk add openssh-client rsync
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | ssh-add -
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - ssh-keyscan -p 4242 pangu.sends.cc >> ~/.ssh/known_hosts
+  script:
+    - rsync -e 'ssh -p 4242' -atv --delete --progress ./dist  ubuntu@pangu.sends.cc:/home/ubuntu/tmp/submit/frontend
+    - ssh -p 4242 ubuntu@pangu.sends.cc bash /home/ubuntu/hquservice/submit/run.sh
