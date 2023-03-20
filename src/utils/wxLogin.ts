@@ -12,7 +12,7 @@ async function checkCode() {
   if (document.location.hash.includes('?')) {
     const query = document.location.hash.match(/code=([^&]+)/)
     let wxCode = ''
-    if (query) wxCode = query[0].split('&')[0]
+    if (query) wxCode = query[1]
 
     if (wxCode) {
       if (document.location.hash.includes('admin')) {

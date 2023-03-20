@@ -3,7 +3,7 @@ import type { Activity } from '../../types/activity'
 import type { userForm } from '@/types/form'
 
 async function userLogin(wxCode: string): Promise<string> {
-  const res = await axios.post('/user/login', { code: wxCode })
+  const res = await axios.post('/user/login', { Code: wxCode })
   if (res.data.code === 200) {
     return res.data.data.token
   } else {
