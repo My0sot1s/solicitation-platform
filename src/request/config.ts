@@ -23,11 +23,11 @@ axios.interceptors.request.use(
     })
     if (!document.location.hash.includes('admin')) {
       // 用户端请求
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem('collect_token')
       if (token) config.headers!.token = token
     } else if (document.location.hash.includes('admin')) {
       // 管理员请求
-      const adminToken = localStorage.getItem('adminToken')
+      const adminToken = localStorage.getItem('collect_adminToken')
       if (adminToken) config.headers!.token = adminToken
     }
     return config

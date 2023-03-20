@@ -16,9 +16,9 @@ async function checkCode() {
 
     if (wxCode) {
       if (document.location.hash.includes('admin')) {
-        localStorage.setItem('adminToken', await adminLogin(wxCode))
+        localStorage.setItem('collect_adminToken', await adminLogin(wxCode))
       } else {
-        localStorage.setItem('token', await userLogin(wxCode))
+        localStorage.setItem('collect_token', await userLogin(wxCode))
       }
     }
   }
@@ -27,9 +27,9 @@ async function checkCode() {
 function checkToken() {
   let token: string | null
   if (document.location.hash.includes('admin')) {
-    token = localStorage.getItem('adminToken')
+    token = localStorage.getItem('collect_adminToken')
   } else {
-    token = localStorage.getItem('token')
+    token = localStorage.getItem('collect_token')
   }
   if (!token) {
     wxLoginRedirect(location.hash)
