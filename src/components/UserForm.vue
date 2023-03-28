@@ -105,7 +105,12 @@ onBeforeMount(async () => {
     const res = await userDetail(parseInt(route.query.ID as string))
     Object.assign(form, res[0])
     form.ArticleID = parseInt(route.query.ID as string)
-    console.log(form.value)
+    form.ArticlePhotos?.forEach((photo) => {
+      if (imgs.value === undefined) imgs.value = []
+      imgs.value?.push({ url: photo.Link })
+    })
+    console.log(imgs)
+    console.log(form)
   } else {
     form.ActivityID = parseInt(route.params.ActivityID as string)
   }
