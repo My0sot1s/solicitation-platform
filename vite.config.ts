@@ -14,8 +14,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://175.178.162.207:8000/',
-        // target: 'http://localhost:8080/',
+        target: 'https://hquservice.sends.cc',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }
