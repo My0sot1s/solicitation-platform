@@ -83,13 +83,14 @@ const loadList = reactive({
 
 const tempCards = ref<Activity[] | userForm[]>([])
 const onLoad = async () => {
-  /* try {
-    cards0.value = await props.tab!.api()
-    finished.value = true
+  try {
+    tempCards.value = await props.tab!.api()
+    loadList.finished = true
+    loadList.error = false
   } catch (e) {
-    error.value = true
-  } */
-  loading.value = false
+    loadList.error = true
+  }
+  loadList.loading = false
 }
 const cards = computed(() => {
   if (props.tab?.showCard === 'Card') {

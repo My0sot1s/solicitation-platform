@@ -109,8 +109,6 @@ onBeforeMount(async () => {
       if (imgs.value === undefined) imgs.value = []
       imgs.value?.push({ url: photo.Link })
     })
-    console.log(imgs)
-    console.log(form)
   } else {
     form.ActivityID = parseInt(route.params.ActivityID as string)
   }
