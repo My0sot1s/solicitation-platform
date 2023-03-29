@@ -2,10 +2,13 @@ import _axios from 'axios'
 import { wxLoginRedirect } from '@/utils/wxLogin'
 import {
   showLoadingToast,
-  showSuccessToast,
   showFailToast,
-  closeToast
+  closeToast,
+  Dialog,
+  showDialog
 } from 'vant'
+
+const withoutToken = ['user/going', 'user/finished']
 
 const axios = _axios.create({
   baseURL: '/api',
@@ -21,6 +24,7 @@ axios.interceptors.request.use(
       message: '加载中...',
       forbidClick: true
     })
+    if (withoutToken.some((item) => config.url!.includes(item))) return config
     if (!document.location.hash.includes('admin')) {
       // 用户端请求
       const token = localStorage.getItem('collect_token')
@@ -43,12 +47,27 @@ axios.interceptors.response.use(
     closeToast()
     if (response.data.code) {
       const { code, msg } = response.data
-      if (code === 200) {
-        showSuccessToast(msg)
-      } else {
-        showFailToast(msg)
+      if (code !== 200) {
+        if (msg === 'Unauthorized') {
+          showFailToast('用户未登录！')
+        } else {
+          showFailToast(msg)
+        }
         if (code === 401) {
-          wxLoginRedirect(location.hash)
+          if (sessionStorage.getItem('tourist')) {
+            showDialog({
+              title: '提示',
+              message: '当前为游客身份，请通过校内认证登录',
+              confirmButtonText: '去登录',
+              cancelButtonText: '知道了',
+              showCancelButton: true,
+              closeOnPopstate: false
+            }).then(() => {
+              wxLoginRedirect(location.hash)
+            })
+          } else {
+            wxLoginRedirect(location.hash)
+          }
         }
       }
     }

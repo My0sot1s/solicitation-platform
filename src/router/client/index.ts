@@ -3,6 +3,10 @@ import type { RouteRecordRaw } from 'vue-router'
 export const clientRoutes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/home' },
   {
+    path: '/tourist',
+    redirect: '/home'
+  },
+  {
     path: '/home',
     meta: { title: '稿件征集', next: '' },
     component: () => import('@/views/client/Home.vue')

@@ -31,13 +31,16 @@ function checkToken() {
   } else {
     token = localStorage.getItem('collect_token')
   }
-  if (!token) {
+  if (!token && !sessionStorage.getItem('tourist')) {
     wxLoginRedirect(location.hash)
   }
 }
 
 export default {
   async install() {
+    if (location.href.includes('tourist')) {
+      sessionStorage.setItem('tourist', '1')
+    }
     try {
       await checkCode()
     } catch (error) {
