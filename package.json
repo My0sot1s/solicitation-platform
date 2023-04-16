@@ -16,6 +16,7 @@
     "pinia": "^2.0.28",
     "pinia-plugin-persistedstate": "^3.1.0",
     "postcss-px-to-viewport": "^1.1.1",
+    "terser": "^5.16.9",
     "vant": "^4.1.0",
     "vue": "^3.2.45",
     "vue-clipboard3": "^2.0.0",
